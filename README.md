@@ -25,6 +25,10 @@ Person C will complete 4 and 5
 
 ## Overview
 1. Takes input validates sop:
-- latin letters a  to z
+- latin letters a to z
+- if there are no brackets then it is sop
+- Cannot be (ab)' or (a+b)' i.e. no multi input not operations or not that acts on a sum
+- any ( SUM ) must be preceded and followed by a "+" or nothing at all 
+- we will consider " AA+AA' " to be valid sop
 - must be products with only sums between them
 - must return a list or vector of the variables in the input for other functions to use
