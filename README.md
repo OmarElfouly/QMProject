@@ -24,11 +24,30 @@ Person C will complete 4 and 5
 - [ ] Test cases
 
 ## Overview
-1. Takes input validates sop:
+### Part 1:
+Takes input validates sop:
 - latin letters a to z
 - if there are no brackets then it is sop
+- Unclosed bracket is an automatic fail
+- Operator at start or finish is a fail
 - Cannot be (ab)' or (a+b)' i.e. no multi input not operations or not that acts on a sum
 - any ( SUM ) must be preceded and followed by a "+" or nothing at all 
 - we will consider " AA+AA' " to be valid sop
 - must be products with only sums between them
 - must return a list or vector of the variables in the input for other functions to use
+
+Input: User input
+Output: Clean input
+
+### Part 2:
+Input: clean user input
+Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
+
+### Part 3:
+Input: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
+Output: map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
+
+### Part 4 and 5:
+Input:map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
+Output: Solved sop
+
