@@ -22,3 +22,8 @@ Person C will complete 4 and 5
 - [ ] Plan basic algorithim flow
 - [ ] Person A, B, C, begin programming
 - [ ] Test cases
+
+## Overview
+1. Takes input validates sop:
+- latin letters a  to z
+- must be products with only sums between them
