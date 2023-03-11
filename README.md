@@ -1,8 +1,8 @@
 # Project1
 
-Person A =
-Person B =
-Person C =
+Person A = Ahmed
+Person B = Bavly
+Person C = Omar Elfouly
 
 ## Distribution plan:
 
