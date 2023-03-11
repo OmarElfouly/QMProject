@@ -27,3 +27,4 @@ Person C will complete 4 and 5
 1. Takes input validates sop:
 - latin letters a  to z
 - must be products with only sums between them
+- must return a list or vector of the variables in the input for other functions to use
