@@ -1,7 +1,7 @@
 # Project1
 
-Person A = Ahmed
-Person B = Bavly
+Person A = Ahmed Ali
+Person B = Bavly Remon
 Person C = Omar Elfouly
 
 ## Distribution plan:
@@ -17,17 +17,17 @@ Person C will complete 4 and 5
 ## Plan so far:
 
 - [ ] Confirm Distrubition with Professor
-- [ ] Decide on data structure (s)
+- [ ] Decide on data structure(s)
 - [ ] Decide on function headers i.e. input and output
-- [ ] Plan basic algorithim flow
+- [ ] Plan basic algorithm flow
 - [ ] Person A, B, C, begin programming
 - [ ] Test cases
 
 ## Overview
 ### Part 1:
-Takes input validates sop:
+Takes input validates SoP:
 - latin letters a to z
-- if there are no brackets then it is sop
+- if there are no brackets then it is SoP
 - Unclosed bracket is an automatic fail
 - Operator at start or finish is a fail
 - Cannot be (ab)' or (a+b)' i.e. no multi input not operations or not that acts on a sum
