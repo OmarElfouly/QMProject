@@ -52,7 +52,7 @@ bool validation(string input, vector<string> terms)
 			return false;
 	}
 
-	if (!(arr[0] == arr[1]))		//if the number of opening and closing brackets are unequal, then the input is invalid.
+	if (arr[0] != arr[1])		//if the number of opening and closing brackets are unequal, then the input is invalid.
 		return false;
 	else if (arr[0] == 0 && arr[1] == 0)
 		return true;				//if there are no brackets, then it is in SoP form.
