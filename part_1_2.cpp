@@ -24,5 +24,16 @@ vector<string> split(string input, string delim)		//string splitting function, s
 
 bool validation(string input, vector<string> terms)
 {
-	input.erase(remove(input.begin(), input.end(), ' '), input.end());
+	input.erase(remove(input.begin(), input.end(), ' '), input.end());	//remove any spaces in the input, easier to handle.
+	int arr[2] = { 0, 0 };
+
+	for (auto& i : input) {
+		if (i == '(')
+			arr[0]++;
+		else if (i == ')')
+			arr[1]++;
+	}
+
+	if(!(arr[0] == arr[1]))		//if the number of opening and closing brackets are unequal, then the input is invalid.
+		return false;
 }
