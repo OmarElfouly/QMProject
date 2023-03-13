@@ -69,5 +69,23 @@ bool validation(string input, vector<string> terms)
 	else if (arr[0] == 0 && arr[1] == 0)
 		return true;				//if there are no brackets, then it is in SoP form.
 
+	vector<pair<int, int>> brackets = bracketPairs(input);	//creating vector of bracket pair positions
+	vector<pair<pair<int, int>, char>> bracketTerms;		//vector which will contain brackets and if they contain a sum or a product
+	bool sum = false;
+
+	for (auto& i : brackets) {
+		sum = false;
+		for (int j = i.first + 1; j < i.second; j++) {
+			if (input[j] == '+') {
+				sum = true;
+				break;
+			}
+		}
+		if (sum)
+			bracketTerms.push_back(make_pair(i, 's'));	//if a '+' is found at any point between the brackets, the bracket is identified as a sum bracket
+		else
+			bracketTerms.push_back(make_pair(i, 'p'));	//otherwise, it is identified as a product bracket.
+	}
+
 	return defaultBool;
 }
