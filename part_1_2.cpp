@@ -45,6 +45,18 @@ vector<pair<int, int>> bracketPairs(string input)		//function to find each pair 
 	return pairs;
 }
 
+vector<char> varList(string input)
+{
+	vector<char> vars;
+	for (auto& i : input) {
+		if (isalpha(i) && find(vars.begin(), vars.end(), i) != vars.end())	//if it's a letter and does not exist in the vector, add it.
+			vars.push_back(i);
+	}
+	sort(vars.begin(), vars.end());
+
+	return vars;
+}
+
 bool validation(string input, vector<string> terms)
 {
 	bool defaultBool = false;
