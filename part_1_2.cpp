@@ -24,7 +24,7 @@ vector<string> split(string input, string delim)		//string splitting function, s
 	return terms;
 }
 
-vector<pair<int, int>> bracketPairs(string input, vector<int>& allBracks)
+vector<pair<int, int>> bracketPairs(const string input, vector<int>& allBracks)
 {
 	vector<pair<int, int>> pairs;
 	stack<int> stack;
@@ -47,7 +47,7 @@ vector<pair<int, int>> bracketPairs(string input, vector<int>& allBracks)
 	return pairs;
 }
 
-vector<char> varList(string input)
+vector<char> varList(const string input)
 {
 	vector<char> vars;
 	for (auto& i : input) {
