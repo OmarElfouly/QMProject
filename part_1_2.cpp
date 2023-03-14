@@ -61,7 +61,7 @@ vector<char> varList(const string input)
 
 bool validation(string input, vector<string> terms)
 {
-	bool defaultBool = false;
+	bool defaultBool = true;
 	vector<int> allBrackIndices;
 
 	input.erase(remove(input.begin(), input.end(), ' '), input.end());		//remove any spaces in the input, easier to handle.
@@ -83,6 +83,8 @@ bool validation(string input, vector<string> terms)
 			if (i > 0 && (input[i - 1] == '(' || input[i - 1] == '+'))	//closing bracket cannot have an opening bracket or a '+' immediately after it.
 				return false;
 		}
+		else if (input[i] == '+' && i < (input.size() - 1) && (input[i + 1] == 39))	//no NOT directly after a '+'.
+			return false;
 		else if (!isalpha(input[i]) && input[i] != '+' && input[i] != 39)		//can use the isalpha() function for above if statements
 			return false;
 	}
@@ -120,6 +122,21 @@ bool validation(string input, vector<string> terms)
 			bracketTerms.push_back(make_pair(i, 's'));	//if a '+' is found at any point between the brackets, the bracket is identified as a sum bracket
 		else
 			bracketTerms.push_back(make_pair(i, 'p'));	//otherwise, it is identified as a product bracket.
+	}
+
+	for (auto& i : bracketTerms) {
+		if (i.second == 's') {		//checks if there is a sum within brackets, as that is where violations occur.
+			if (i.first.first > 0) {
+				char checker = input[i.first.first - 1];
+				if (checker != '+' && checker != '(')
+					return false;
+			}
+			if (i.first.second < input.size() - 1) {
+				char checker = input[i.first.second + 1];
+				if (checker != '+' && checker != ')' && checker != 39)	//checker == 39 should not occur, already accounted for previously.
+					return false;
+			}
+		}
 	}
 
 	return defaultBool;
