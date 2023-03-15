@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <map>
 #include <string>
@@ -5,11 +6,7 @@
 #include <set>
 using namespace std;
 
-
-//this function will take an input map where key is the PI and the data is a vector of bool values such that 
-//a True in position x means this PI covers minterm x
-
-void SimplifyPIS(map<string, vector<int>> PIToMinterm, string vars, vector<int> minterms) {
+void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> minterms) {
 	//find epi, then remove dominated rows, then remove dominating cols repeat until no minterms left
 	//an epi is an essential prime implicant that is the only cover for a certain minterm
 	//so for every minterm we must know who is covering it
@@ -42,6 +39,5 @@ void SimplifyPIS(map<string, vector<int>> PIToMinterm, string vars, vector<int> 
 		cout << "There are no essential prime implicants.\n";
 	}
 
-	
-
+	return;
 }

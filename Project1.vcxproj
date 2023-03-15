@@ -133,7 +133,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="part3.cpp" />
     <ClCompile Include="part_1_2.cpp" />
-    <ClCompile Include="part4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="part4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

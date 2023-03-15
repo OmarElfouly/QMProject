@@ -162,4 +162,5 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int> index
 
 		}
 	}
+	return vector<int> (5,0); //temporary to allow test run in main
 }
