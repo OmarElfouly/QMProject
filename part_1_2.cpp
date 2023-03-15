@@ -67,7 +67,10 @@ bool validation(string input, vector<string> terms)
 	input.erase(remove(input.begin(), input.end(), ' '), input.end());		//remove any spaces in the input, easier to handle.
 	transform(input.begin(), input.end(), input.begin(), ::tolower);		//all characters are lowercase for convencience and consistency.
 	if (((input[0] < 97 || input[0] > 122) && input[0] != 40) || ((input.back() < 97 || input.back() > 122) && input.back() != 41 && input.back() != 39))
-		return false;														//making sure we do not start or end with anything other than letters, or (correct) brackets, or NOTs at the end.
+		return false;				//making sure we do not start or end with anything other than letters, or (correct) brackets, or NOTs at the end.
+
+	if (varList(input).size() > 10)
+		return false;
 
 	int arr[2] = { 0, 0 };
 	for (int i = 0; i < input.size(); i++) {
