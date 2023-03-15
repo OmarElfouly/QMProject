@@ -174,6 +174,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 
 	vector<vector<int>> dominance(2, vector<int>(varCount, 0));
 	for (int i = 0; i < terms.size(); i++) {					//checking if a term has both a normal variable and the same variable NOT'ed.
+		dominance = vector<vector<int>>(2, vector<int>(varCount, 0));
 		for (int j = 0; j < terms[i].size(); j++) {
 			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39)
 				dominance[0][index[terms[i][j]]] = 1;
@@ -189,11 +190,10 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		}
 	}
 
-
 	for (auto& i : variableList) {
 		cout << i << "\t";
 	}
-	cout << "f(x)" << endl;
+	cout << "f" << endl;
 
 	if (terms.empty()) {
 		for (int i = 0; i < 1 << varCount; i++) {
@@ -203,7 +203,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 			}
 			cout << "0" << endl;
 		}
-		cout << "f(x) = 0";
+		cout << "f = 0";
 		return minterms;
 	}
 
@@ -252,6 +252,8 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		else
 			cout << "0" << endl;
 	}
+	if (minterms.size() == 1 << varCount)
+		cout << "f = 1";
 
 	return minterms;
 }
