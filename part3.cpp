@@ -67,8 +67,7 @@ bool match(string imp1, string imp2) {
 	return (diff_count == 1); // Return true if the difference count is 1, false otherwise
 }
 
-
-string binary_diff(int a, int b) {
+string binary_diff(int a, int b, int size) {
 	string binary_a = bitset<32>(a).to_string();
 	string binary_b = bitset<32>(b).to_string();
 
@@ -89,16 +88,21 @@ string binary_diff(int a, int b) {
 	// Replace the different bit with "-"
 	string result = binary_a;
 	result[diff_index] = '-';
+
+	// Remove extra 0s on the left and cap the size if necessary
+	result.erase(0, min(result.find_first_not_of('0'), result.size() - size));
+	if (result.length() < size) {
+		result = string(size - result.length(), '0') + result;
+	}
+
 	return result;
 }
 
-
-
-map<string, vector<int>> primeimplicants(vector<bool> table, vector<string> var)
+vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
 {
 	vector<int> minterms;
 
-	for (int i = 0; i <= table.size(); i++)
+	for (int i = 0; i < table.size(); i++)
 	{
 		if (table[i])
 			minterms.push_back(i);
@@ -107,11 +111,12 @@ map<string, vector<int>> primeimplicants(vector<bool> table, vector<string> var)
 	vector<vector<int>> groups(var.size());  // Initialize the groups
 	for (auto m : minterms) {
 		int count = count_ones(m);
-		groups[count].push_back(m);
+		groups[count - 1].push_back(m);
 	}
 
 	vector<string> primes;
-	for (int i = 0; i < 31; i++)
+	vector<vector<string>> primegrps(var.size());
+	for (int i = 0; i < var.size() - 1; i++)
 	{
 		if (groups[i].empty() || groups[i + 1].empty())
 			continue;  // Skip empty groups
@@ -120,17 +125,25 @@ map<string, vector<int>> primeimplicants(vector<bool> table, vector<string> var)
 		{
 			for (auto num2 : groups[i + 1])
 			{
-				if (differ_by_one(num1, num2)) {
+				if (differ_by_one(num1, num2))
+				{
 					// Combine the two numbers into a new number
-					string new_num = binary_diff(num1, num2);
-						// Check if the new number is already in the list of primes
-						if (find(primes.begin(), primes.end(), new_num) == primes.end())
-							primes.push_back(new_num);
+					string new_num = binary_diff(num1, num2, var.size());
+					// Check if the new number is already in the list of primes
+					if (find(primes.begin(), primes.end(), new_num) == primes.end())
+					{
+						primes.push_back(new_num);
+						primegrps[i].push_back(new_num);
+
+					}
 				}
 			}
 		}
 	}
+	return primegrps;
 }
+
+
 	
 
 
