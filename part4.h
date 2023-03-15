@@ -13,32 +13,33 @@ void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 
 	// Since we wish to find the minterms of each PI and the PIs of each minterm we would require
 	// a data structre that allows us to read both of these with a reasonable complexity
-	// given the choice of sets or maps we have chosen maps for
+	// given the choice of sets or maps we have chosen maps for the convience offered by keys
+
 	map<int, vector<string>> mintermToPI;
 	for (auto piWithMinterms : PIToMinterm) {
 		for (auto minterm : PIToMinterm[piWithMinterms.first]) {
 			mintermToPI[minterm].push_back(piWithMinterms.first);
 		}
 	}
+
 	// first we find all epis
 	vector<string> EPIS;
 	bool flag = false;
 	vector<int> mintermsToErase;
+
 	for (auto minterm : mintermToPI) {
 		if (minterm.second.size() == 1) {// if there is only a single PI covering this minterm
 			string pi = minterm.second.front();
 			EPIS.push_back(pi);
 			mintermsToErase.push_back(minterm.first);
-			//mintermToPI.erase(minterm.first);
-			PIToMinterm.erase(pi);
 			flag = true;
 		}
 	}
-	for (auto min : mintermsToErase) {
-		mintermToPI.erase(min);
-	}
 
-	//output
+
+
+
+	//outputing epis
 	if (flag) {
 		cout << "The essential prime implicants are:\n";
 		for (auto epi : EPIS) {
@@ -48,7 +49,20 @@ void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 	else {
 		cout << "There are no essential prime implicants.\n";
 	}
-	//remain minterm output
+
+	//remaing minterm output
+	for (auto epi : EPIS) {
+		for (auto mins : PIToMinterm[epi]) {
+			mintermsToErase.push_back(mins);
+		}
+		PIToMinterm.erase(epi);
+	}
+
+	for (auto min : mintermsToErase) {
+		mintermToPI.erase(min);
+	}
+
+
 	cout << "\nRemaining minterms are:\n";
 	for (auto min : mintermToPI) {
 		cout << "-\tm" << min.first << endl;
