@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
+#include <bitset>
 
 using namespace std;
 
@@ -52,7 +53,7 @@ vector<char> varList(const string input)
 {
 	vector<char> vars;
 	for (auto& i : input) {
-		if (isalpha(i) && find(vars.begin(), vars.end(), i) != vars.end())	//if it's a letter and does not exist in the vector, add it.
+		if (isalpha(i) && find(vars.begin(), vars.end(), i) == vars.end())	//if it's a letter and does not exist in the vector, add it.
 			vars.push_back(i);
 	}
 	sort(vars.begin(), vars.end());
@@ -60,7 +61,7 @@ vector<char> varList(const string input)
 	return vars;
 }
 
-bool validation(string input, vector<string>& terms, map<char, int> index)
+bool validation(string input, vector<string>& terms, map<char, int>& index)
 {
 	bool defaultBool = true;
 	vector<int> allBrackIndices;
@@ -68,7 +69,9 @@ bool validation(string input, vector<string>& terms, map<char, int> index)
 	input.erase(remove(input.begin(), input.end(), ' '), input.end());		//remove any spaces in the input, easier to handle.
 	transform(input.begin(), input.end(), input.begin(), ::tolower);		//all characters are lowercase for convencience and consistency.
 	if (((input[0] < 97 || input[0] > 122) && input[0] != 40) || ((input.back() < 97 || input.back() > 122) && input.back() != 41 && input.back() != 39))
-		return false;				//making sure we do not start or end with anything other than letters, or (correct) brackets, or NOTs at the end.
+		return false;														//making sure we do not start or end with anything other than letters, or (correct) brackets, or NOTs at the end.
+	if (input.size() == 0)
+		return false;
 
 	vector<char> variableList = varList(input);
 	if (variableList.size() > 10)
@@ -130,7 +133,7 @@ bool validation(string input, vector<string>& terms, map<char, int> index)
 	}
 
 	for (auto& i : bracketTerms) {
-		if (i.second == 's') {		//checks if there is a sum within brackets, as that is where violations occur.
+		if (i.second == 's') {			//checks if there is a sum within brackets, as that is where violations occur.
 			if (i.first.first > 0) {
 				char checker = input[i.first.first - 1];
 				if (checker != '+' && checker != '(')
@@ -144,22 +147,81 @@ bool validation(string input, vector<string>& terms, map<char, int> index)
 		}
 	}
 
-	input.erase(remove(input.begin(), input.end(), '('), input.end());
-	input.erase(remove(input.begin(), input.end(), ')'), input.end());	//if SoP, brackets do not affect its meaning.
-
-	terms = split(input, "+");
-	for (int i = 0; i < variableList.size(); i++) {
-		index[variableList[i]] = i;					//giving each character its index (hierarchy). A/0 is the MSB.
-	}
-
 	return defaultBool;
 }
 
-vector<int> truthTable(string input, vector<string>& terms, map<char, int> index)
+void flipVector(vector<vector<int>>& vec, int i, int j)
 {
-	for (auto& i : terms) {
-		for (auto& j : i) {
+	if (vec[i][j] == 0)
+		vec[i][j] = 1;
+	else if (vec[i][j] == 1)
+		vec[i][j] = 0;
+}
 
+vector<int> truthTable(string input, vector<string>& terms, map<char, int>& index)
+{
+	input.erase(remove(input.begin(), input.end(), '('), input.end());
+	input.erase(remove(input.begin(), input.end(), ')'), input.end());	//if SoP, brackets do not affect its meaning.
+
+	vector<char> variableList = varList(input);
+	int varCount = variableList.size();
+
+	terms = split(input, "+");
+	for (int i = 0; i < varCount; i++) {
+		index[variableList[i]] = i;					//giving each character its index (hierarchy). A/0 is the MSB.
+	}
+
+
+	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
+	vector<int> minterms;
+	vector<int> tempTerms;
+
+
+	int tempIndex = 0;
+
+	for (int i = 0; i < terms.size(); i++) {
+		for (int j = 0; j < terms[i].size(); j++) {
+			if (terms[i][j] == 39) {
+				flipVector(binTerms, i, tempIndex);	//tempindex only changes in the last iteration, and only changes when it is a variable, so NOTs (39), will only affect the variable.
+			}
+			else {
+				tempIndex = index[terms[i][j]];
+				binTerms[i][tempIndex] = 1;			//set the var found to 1 in the binary table.
+			}
 		}
 	}
+
+	bool isMinterm = true;
+
+	for (auto& i : variableList) {
+		cout << i << "\t";
+	}
+	cout << "f(x)" << endl;
+
+	for (int i = 0; i < 1 << varCount; i++) {
+		bitset<10> bits(i);
+		for (int i = varCount - 1; i >= 0; i--) {
+			cout << bits[i] << "\t";
+		}
+		for (int j = 0; j < binTerms.size(); j++) {
+			isMinterm = true;
+			for (int k = 0; k < binTerms[j].size(); k++) {
+				if (binTerms[j][k] != 2 && binTerms[j][k] != bits[binTerms[j].size() - 1 - k]) {
+					isMinterm = false;
+					break;
+				}
+			}
+			if (isMinterm) {
+				minterms.push_back(i);
+				break;
+			}
+		}
+		if (isMinterm) {
+			cout << "1" << endl;
+		}
+		else
+			cout << "0" << endl;
+	}
+
+	return minterms;
 }
