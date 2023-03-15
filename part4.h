@@ -23,12 +23,22 @@ void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 	// first we find all epis
 	vector<string> EPIS;
 	bool flag = false;
+	vector<int> mintermsToErase;
 	for (auto minterm : mintermToPI) {
 		if (minterm.second.size() == 1) {// if there is only a single PI covering this minterm
-			EPIS.push_back(minterm.second.front());
+			string pi = minterm.second.front();
+			EPIS.push_back(pi);
+			mintermsToErase.push_back(minterm.first);
+			//mintermToPI.erase(minterm.first);
+			PIToMinterm.erase(pi);
 			flag = true;
 		}
 	}
+	for (auto min : mintermsToErase) {
+		mintermToPI.erase(min);
+	}
+
+	//output
 	if (flag) {
 		cout << "The essential prime implicants are:\n";
 		for (auto epi : EPIS) {
@@ -37,6 +47,11 @@ void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 	}
 	else {
 		cout << "There are no essential prime implicants.\n";
+	}
+	//remain minterm output
+	cout << "\nRemaining minterms are:\n";
+	for (auto min : mintermToPI) {
+		cout << "-\tm" << min.first << endl;
 	}
 
 	return;
