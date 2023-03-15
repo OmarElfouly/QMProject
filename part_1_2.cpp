@@ -175,7 +175,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 	vector<vector<int>> dominance(2, vector<int>(varCount, 0));
 	for (int i = 0; i < terms.size(); i++) {					//checking if a term has both a normal variable and the same variable NOT'ed.
 		for (int j = 0; j < terms[i].size(); j++) {
-			if (j < terms[i].size() && terms[i][j + 1] != 39)
+			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39)
 				dominance[0][index[terms[i][j]]] = 1;
 			else if (j < terms[i].size() && terms[i][j + 1] == 39)
 				flipVector(dominance, 1, index[terms[i][j]]);
@@ -209,6 +209,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 
 	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
 
+
 	int tempIndex = 0;
 
 	for (int i = 0; i < terms.size(); i++) {
@@ -223,7 +224,9 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		}
 	}
 
+
 	bool isMinterm = true;
+
 
 	for (int i = 0; i < 1 << varCount; i++) {
 		bitset<10> bits(i);
