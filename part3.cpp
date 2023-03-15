@@ -6,97 +6,75 @@
 
 using namespace std;
 // Count the number of 1's in a binary number
-int count_ones(int num) {
+int count_ones(const std::string& int_string) {
+	int num = std::stoi(int_string);
+	std::string binary_string = std::bitset<32>(num).to_string();
 	int count = 0;
-	while (num) {
-		count += num % 2;
-		num /= 2;
+	for (char c : binary_string) {
+		if (c == '1') {
+			count++;
+		}
 	}
 	return count;
 }
+
 // Check if two binary numbers differ by exactly one bit
-bool differ_by_one(int num1, int num2) {
-	int diff = num1 ^ num2;
-	return (count_ones(diff) == 1);
-}
-// check if two strings differ by one character only
-bool isOneCharDiff(string str1, string str2) {
-	int diffCount = 0;
+bool differ_by_one(const string& str1, const string& str2) {
 	if (str1.length() != str2.length()) {
-		return false; 
+		return false; // If the strings are of different lengths, they can't differ by one character
 	}
+	int diff_count = 0;
 	for (int i = 0; i < str1.length(); i++) {
 		if (str1[i] != str2[i]) {
-			diffCount++;
-		}
-		if (diffCount > 1) {
-			return false; 
+			if (str1[i] == '-' || str2[i] == '-') {
+				return false; // If either of the characters is a '-', they can't differ by one character
+			}
+			diff_count++;
 		}
 	}
-	return (diffCount == 1); 
+	return (diff_count == 1); // Return true if there is only one different character
 }
 
-// This function takes two implicants represented as strings of '0's, '1's, and '-',
-// and combines them into a new implicant that has '-'s in the positions where the
-// two implicants differ.
-string combine(string imp1, string imp2) {
-	string result;
-	int n = imp1.size(); // Get the size of the implicants
-	for (int i = 0; i < n; i++) { // Iterate over each character of the implicants
-		if (imp1[i] == imp2[i]) { // If the characters are the same
-			result.push_back(imp1[i]); // Append the character to the new implicant
-		}
-		else { // If the characters are different
-			result.push_back('-'); // Append a '-' to the new implicant
-		}
-	}
-	return result; // Return the new implicant
-}
-
-// This function takes two implicants represented as strings of '0's, '1's, and '-',
-// and returns true if the two implicants differ in only one position, indicating
-// that they can be combined to form a new implicant.
-bool match(string imp1, string imp2) {
-	int n = imp1.size(); // Get the size of the implicants
-	int diff_count = 0; // Initialize a difference count to 0
-	for (int i = 0; i < n; i++) { // Iterate over each character of the implicants
-		if (imp1[i] != imp2[i]) { // If the characters differ
-			diff_count++; // Increment the difference count
-		}
-	}
-	return (diff_count == 1); // Return true if the difference count is 1, false otherwise
-}
-
-string binary_diff(int a, int b, int size) {
-	string binary_a = bitset<32>(a).to_string();
-	string binary_b = bitset<32>(b).to_string();
-
-	// Find the index of the different bit
-	int diff_index = -1;
-	for (int i = 0; i < binary_a.length(); i++) {
-		if (binary_a[i] != binary_b[i]) {
-			diff_index = i;
-			break;
-		}
-	}
-
-	if (diff_index == -1) {
-		// The two binary numbers are the same
+string combinestring(string a, string b) {
+	if (a.length() != b.length()) {
 		return "";
 	}
-
-	// Replace the different bit with "-"
-	string result = binary_a;
-	result[diff_index] = '-';
-
-	// Remove extra 0s on the left and cap the size if necessary
-	result.erase(0, min(result.find_first_not_of('0'), result.size() - size));
-	if (result.length() < size) {
-		result = string(size - result.length(), '0') + result;
+	string result = "";
+	for (int i = 0; i < a.length(); i++) {
+		if (a[i] != b[i]) {
+			result += "-";
+		}
+		else {
+			result += a[i];
+		}
 	}
-
 	return result;
 }
+
+string to_binary_string(int num, int length) {
+	string binary_str;
+	while (num > 0) {
+		binary_str = to_string(num % 2) + binary_str;
+		num /= 2;
+	}
+	while (binary_str.length() < length) {
+		binary_str = "0" + binary_str;
+	}
+	return binary_str;
+}
+
+struct implicant {
+	string mincovered;
+	string imp;
+	bool is_combined = false;
+
+	implicant(string m, string i, bool c) {
+		mincovered = m;
+		imp = i;
+		is_combined = c;
+	}
+};
+
 
 vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
 {
