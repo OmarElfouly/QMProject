@@ -1,12 +1,24 @@
 #pragma once
 #include <iostream>
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
 #include <set>
 using namespace std;
 
-void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> minterms) {
+template <typename T>
+bool IsSubset(vector<T> maybeSuperset, vector<T> maybeSubset)
+{
+	if (maybesubset.size() == 0) {
+		return false;
+	}
+	sort(maybeSubset.begin(), maybeSubset.end());
+	sort(maybeSuperset.begin(), maybeSuperset.end());
+	return includes(maybeSubset.begin(), maybeSubset.end(), maybeSuperset.begin(), maybeSuperset.end());
+}
+
+void part4And5(map<string, vector<int>> PIToMinterm, string vars, vector<int> minterms) {
 	//find epi, then remove dominated rows, then remove dominating cols repeat until no minterms left
 	//an epi is an essential prime implicant that is the only cover for a certain minterm
 	//so for every minterm we must know who is covering it
@@ -37,8 +49,6 @@ void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 	}
 
 
-
-
 	//outputing epis
 	if (flag) {
 		cout << "The essential prime implicants are:\n";
@@ -67,6 +77,22 @@ void part4func(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 	for (auto min : mintermToPI) {
 		cout << "-\tm" << min.first << endl;
 	}
+	//Part 5 now requires us to repeat this process until there are no remaining minterms
+	vector<string> finalAnswer = EPIS;
+	while (mintermToPI.size() > 0) {// while there still exist uncovered minterms...
+		//remove dominating columns
+		for (auto x : mintermToPI) {
+			for (auto y : mintermToPI) {
+				if (x.first != y.first) {
+					if (IsSubset<string>(x.second, y.second)) {
+						mintermToPI.erase(x.first);
+					}
+				}
+			}
+		}
 
+		//remove dominated rows
+
+	}
 	return;
 }

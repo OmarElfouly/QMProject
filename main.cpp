@@ -11,5 +11,11 @@ int main() {
 	string vars = "ABCFE";
 	vector<int> mins= { 0,1,2,3 };
 
-	part4func(piToM_test, vars, mins);
+	part4And5(piToM_test, vars, mins);
+
+	vector<int> subset = { 0,1};
+	vector<int> superset = { -1,0,1,2,3 };
+
+	cout << IsSubset(superset, subset);
+
 }
