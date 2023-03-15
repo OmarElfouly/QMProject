@@ -160,6 +160,7 @@ void flipVector(vector<vector<int>>& vec, int i, int j)
 
 vector<int> truthTable(string input, vector<string>& terms, map<char, int>& index)
 {
+	vector<int> minterms;
 	input.erase(remove(input.begin(), input.end(), '('), input.end());
 	input.erase(remove(input.begin(), input.end(), ')'), input.end());	//if SoP, brackets do not affect its meaning.
 
@@ -171,11 +172,42 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		index[variableList[i]] = i;					//giving each character its index (hierarchy). A/0 is the MSB.
 	}
 
+	vector<vector<int>> dominance(2, vector<int>(varCount, 0));
+	for (int i = 0; i < terms.size(); i++) {					//checking if a term has both a normal variable and the same variable NOT'ed.
+		for (int j = 0; j < terms[i].size(); j++) {
+			if (j < terms[i].size() && terms[i][j + 1] != 39)
+				dominance[0][index[terms[i][j]]] = 1;
+			else if (j < terms[i].size() && terms[i][j + 1] == 39)
+				flipVector(dominance, 1, index[terms[i][j]]);
+		}
+		for (int k = 0; k < dominance[0].size(); k++) {
+			if (dominance[0][k] == 1 && dominance[1][k] == 1) {
+				terms.erase(terms.begin() + i);					//if it does, remove it from the list.
+				i--;
+				break;
+			}
+		}
+	}
+
+
+	for (auto& i : variableList) {
+		cout << i << "\t";
+	}
+	cout << "f(x)" << endl;
+
+	if (terms.empty()) {
+		for (int i = 0; i < 1 << varCount; i++) {
+			bitset<10> bits(i);
+			for (int i = varCount - 1; i >= 0; i--) {
+				cout << bits[i] << "\t";
+			}
+			cout << "0" << endl;
+		}
+		cout << "f(x) = 0";
+		return minterms;
+	}
 
 	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
-	vector<int> minterms;
-	vector<int> tempTerms;
-
 
 	int tempIndex = 0;
 
@@ -192,11 +224,6 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 	}
 
 	bool isMinterm = true;
-
-	for (auto& i : variableList) {
-		cout << i << "\t";
-	}
-	cout << "f(x)" << endl;
 
 	for (int i = 0; i < 1 << varCount; i++) {
 		bitset<10> bits(i);
