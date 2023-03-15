@@ -21,6 +21,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="part3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="part4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
