@@ -23,6 +23,24 @@ void SimplifyPIS(map<string, vector<int>> PIToMinterm, string vars, vector<int> 
 			mintermToPI[minterm].push_back(piWithMinterms.first);
 		}
 	}
+	// first we find all epis
+	vector<string> EPIS;
+	bool flag = false;
+	for (auto minterm : mintermToPI) {
+		if (minterm.second.size() == 1) {// if there is only a single PI covering this minterm
+			EPIS.push_back(minterm.second.front());
+			flag = true;
+		}
+	}
+	if (flag) {
+		cout << "The essential prime implicants are:\n";
+		for (auto epi : EPIS) {
+			cout << "-\t" << epi << endl;
+		}
+	}
+	else {
+		cout << "There are no essential prime implicants.\n";
+	}
 
 	
 
