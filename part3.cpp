@@ -3,8 +3,22 @@
 #include <vector>
 #include <string>
 #include <bitset>
+#include <sstream>
 
 using namespace std;
+
+struct implicant {
+	string mincovered;
+	string imp;
+	bool is_combined = false;
+
+	implicant(string m, string i, bool c) {
+		mincovered = m;
+		imp = i;
+		is_combined = c;
+	}
+};
+
 // Count the number of 1's in a binary number
 int count_ones(const std::string& int_string) {
 	int num = std::stoi(int_string);
@@ -86,17 +100,17 @@ void printVector(const vector<vector<implicant>>& vec) {
 	}
 }
 
-struct implicant {
-	string mincovered;
-	string imp;
-	bool is_combined = false;
-
-	implicant(string m, string i, bool c) {
-		mincovered = m;
-		imp = i;
-		is_combined = c;
+vector<char> parseCommaSeparatedString(const string& str) {
+	vector<char> chars;
+	stringstream ss(str);
+	string token;
+	while (getline(ss, token, ',')) {
+		chars.push_back(token[0]);
 	}
-};
+	return chars;
+}
+
+
 
 vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
@@ -152,7 +166,7 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 }
 
 
-vector<vector<string>> primeimplicants(vector<string> minterms , vector<string> var)
+map<string, vector<char>> primeimplicants(vector<string> minterms , vector<string> var)
 {
 
 
@@ -166,8 +180,20 @@ vector<vector<string>> primeimplicants(vector<string> minterms , vector<string> 
 		groups[count].push_back(newimp);
 	}
 
+	vector<implicant> prime_implicants;
+	prime_implicants = generate_column(groups, var);
+
+	map<string, vector<char>> result;
+	vector<char> mins;
+	for (const auto& imp : prime_implicants)
+	{
+		mins = parseCommaSeparatedString(imp.mincovered);
+		
+			result[imp.imp] = mins;
+	}
+
 	
-	return primegrps;
+	return result; 
 }
 
 
