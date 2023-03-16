@@ -8,14 +8,9 @@ int main() {
 		{"AF",{0,1,2}},
 		{"AE",{3}}
 	};
-	string vars = "ABCFE";
-	vector<int> mins= { 0,1,2,3 };
+	//string vars = "ABCFE";
+	//vector<int> mins= { 0,1,2,3 };
 
-	part4And5(piToM_test, vars, mins);
-
-	vector<int> subset = { 0,1};
-	vector<int> superset = { -1,0,1,2,3 };
-
-	cout << IsSubset(superset, subset);
+	part4And5(piToM_test);
 
 }
