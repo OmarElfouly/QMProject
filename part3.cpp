@@ -137,28 +137,31 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 
 			for (auto& num1 : groups[i])
 			{
-				for (auto& num2 : groups[i + 1])
+				if (i < groups.size() - 1)
 				{
-					if (i < groups.size() - 1)
+					for (auto& num2 : groups[i + 1])
 					{
-						if (differ_by_one(num1.imp, num2.imp))
-						{
-							// Combine the two numbers into a new number
-							string new_num = combinestring(num1.imp, num2.imp);
-							// Check if the new number is already in the list of primes
-							num1.is_combined = true;
-							num2.is_combined = true;
-							if (find(primes.begin(), primes.end(), new_num) == primes.end())
+
+						
+							if (differ_by_one(num1.imp, num2.imp))
 							{
-								primes.push_back(new_num);
+								// Combine the two numbers into a new number
+								string new_num = combinestring(num1.imp, num2.imp);
+								// Check if the new number is already in the list of primes
+								num1.is_combined = true;
+								num2.is_combined = true;
+								if (find(primes.begin(), primes.end(), new_num) == primes.end())
+								{
+									primes.push_back(new_num);
 
 
-								implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
-								primegrps[i].push_back(new_imp);
+									implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
+									primegrps[i].push_back(new_imp);
 
-								is_combined = true;
+									is_combined = true;
+								}
 							}
-						}
+					
 					}
 				}
 				if (!num1.is_combined)
