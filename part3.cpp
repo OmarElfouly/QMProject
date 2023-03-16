@@ -110,6 +110,8 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 					}
 				}
 			}
+			if (!num1.is_combined)
+				prime_implicants.push_back(num1);
 		}
 	}
 }
