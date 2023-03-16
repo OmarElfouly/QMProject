@@ -233,12 +233,12 @@ map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string
 
 	for (const auto& kv : result) {
 		cout << kv.first << ": ";
-		for (char c : kv.second) {
-			cout << c << " ";
+		for (int i : kv.second) {
+			cout << i << " ";
 		}
+
 		cout << endl;
 	}
-
 
 	
 	return result; 
