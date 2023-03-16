@@ -32,7 +32,7 @@ void deletePI(map<int, vector<string>>& oldmap, string piTerm) {
 	}
 }
 
-void part4And5(map<string, vector<int>> PIToMinterm, string vars, vector<int> minterms) {
+void part4And5(map<string, vector<int>> PIToMinterm) {
 	if (PIToMinterm.size() == 0) {
 		cout << "\nNo PI terms were given.\n";
 		return;
