@@ -63,6 +63,20 @@ string to_binary_string(int num, int length) {
 	return binary_str;
 }
 
+void printVector(const vector<vector<implicant>>& vec) {
+	for (const auto& innerVec : vec) {
+		for (const auto& imp : innerVec) {
+
+			for (const auto& str : imp.mincovered) {
+				cout << str;
+			}
+
+			cout << " " << imp.imp << " " << endl;
+		}
+		cout << endl;
+	}
+}
+
 struct implicant {
 	string mincovered;
 	string imp;
@@ -82,52 +96,58 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 	bool is_combined;
 	vector<implicant> prime_implicants;
 
-	for (int i = 0; i < var.size() - 1; i++)
+	do
 	{
-		if (groups[i].empty() || groups[i + 1].empty())
+		is_combined = false;
+		for (int i = 0; i < var.size() - 1; i++)
+		{
+			if (groups[i].empty() || groups[i + 1].empty())
 			continue;  // Skip empty groups
 
-		for (auto& num1 : groups[i])
-		{
-			for (auto& num2 : groups[i + 1])
+			for (auto& num1 : groups[i])
 			{
-				if (differ_by_one(num1.imp, num2.imp))
+				for (auto& num2 : groups[i + 1])
 				{
-					// Combine the two numbers into a new number
-					string new_num = combinestring(num1.imp, num2.imp);
-					// Check if the new number is already in the list of primes
-					num1.is_combined = true;
-					num2.is_combined = true;
-					if (find(primes.begin(), primes.end(), new_num) == primes.end())
+					if (differ_by_one(num1.imp, num2.imp))
 					{
-						primes.push_back(new_num);
+						// Combine the two numbers into a new number
+						string new_num = combinestring(num1.imp, num2.imp);
+						// Check if the new number is already in the list of primes
+						num1.is_combined = true;
+						num2.is_combined = true;
+						if (find(primes.begin(), primes.end(), new_num) == primes.end())
+						{
+							primes.push_back(new_num);
 
 
-						implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
-						primegrps[i].push_back(new_imp);
+							implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
+							primegrps[i].push_back(new_imp);
 
-						is_combined = true;
+							is_combined = true;
+						}
 					}
 				}
+				if (!num1.is_combined)
+					prime_implicants.push_back(num1);
 			}
-			if (!num1.is_combined)
-				prime_implicants.push_back(num1);
 		}
-	}
+		printVector(groups);
+		cout << "-------------------------------------------------------" << endl;
+		groups = std::move(primegrps);
+		primegrps.resize(var.size());
+
+	} 
+	while (is_combined);
+
+	return prime_implicants;
 }
 
 
-vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
+vector<vector<string>> primeimplicants(vector<string> minterms , vector<string> var)
 {
-	vector<int> minterms;
 
-	for (int i = 0; i < table.size(); i++)
-	{
-		if (table[i])
-			minterms.push_back(i);
-	}
 
-	vector<vector<int>> groups(var.size());  // Initialize the groups
+	vector<vector<string>> groups(var.size());  // Initialize the groups
 	for (auto m : minterms) {
 		int count = count_ones(m);
 		groups[count - 1].push_back(m);
