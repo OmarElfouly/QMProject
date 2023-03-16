@@ -8,9 +8,9 @@ int main() {
 		{"AF",{0,1,2}},
 		{"AE",{3}}
 	};
-	string vars = "ABCFE";
-	vector<int> mins= { 0,1,2,3 };
+	//string vars = "ABCFE";
+	//vector<int> mins= { 0,1,2,3 };
 
-	part4And5(piToM_test, vars, mins);
+	part4And5(piToM_test);
 
 }
