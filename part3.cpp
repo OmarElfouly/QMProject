@@ -168,7 +168,21 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 
 map<string, vector<char>> primeimplicants(vector<string> minterms , vector<string> var)
 {
+	int numofmin = minterms.size();
 
+	map<string, vector<char>> result;
+
+	if (numofmin == 1 << var.size())
+	{
+		result["1"];
+		return result;
+
+	}
+	if (numofmin == 0)
+	{
+		return result;
+	}
+		
 
 	vector<vector<implicant>> groups(var.size() + 1); // Initialize the groups
 	for (auto m : minterms) {
@@ -183,7 +197,6 @@ map<string, vector<char>> primeimplicants(vector<string> minterms , vector<strin
 	vector<implicant> prime_implicants;
 	prime_implicants = generate_column(groups, var);
 
-	map<string, vector<char>> result;
 	vector<char> mins;
 	for (const auto& imp : prime_implicants)
 	{
