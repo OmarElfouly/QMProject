@@ -35,15 +35,21 @@ bool differ_by_one(const string& str1, const string& str2) {
 	return (diff_count == 1); // Return true if there is only one different character
 }
 
+// This function takes in two binary strings of equal length and combines them into a new
+// binary string where '-' is used to represent differing bits
 string combinestring(string a, string b) {
+	// Check that the two strings are the same length
 	if (a.length() != b.length()) {
 		return "";
 	}
+	// Combine the strings into a new string
 	string result = "";
 	for (int i = 0; i < a.length(); i++) {
+		// If the bits differ, add '-' to the result
 		if (a[i] != b[i]) {
 			result += "-";
 		}
+		// Otherwise, add the matching bit to the result
 		else {
 			result += a[i];
 		}
@@ -51,17 +57,20 @@ string combinestring(string a, string b) {
 	return result;
 }
 
+//converts a decimal number into a binary string, padding with leading zeroes to reach a specified length.
 string to_binary_string(int num, int length) {
-	string binary_str;
-	while (num > 0) {
-		binary_str = to_string(num % 2) + binary_str;
+	string binary_str; 
+	while (num > 0) { // convert decimal to binary by repeated division by 2
+		binary_str = to_string(num % 2) + binary_str; // add the remainder to the beginning of the string
 		num /= 2;
 	}
-	while (binary_str.length() < length) {
+	while (binary_str.length() < length)  // pad the string with leading zeroes until it reaches the desired length
+	{
 		binary_str = "0" + binary_str;
 	}
-	return binary_str;
+	return binary_str; 
 }
+
 
 void printVector(const vector<vector<implicant>>& vec) {
 	for (const auto& innerVec : vec) {
