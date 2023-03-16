@@ -156,10 +156,14 @@ vector<vector<string>> primeimplicants(vector<string> minterms , vector<string> 
 {
 
 
-	vector<vector<string>> groups(var.size());  // Initialize the groups
+	vector<vector<implicant>> groups(var.size() + 1); // Initialize the groups
 	for (auto m : minterms) {
 		int count = count_ones(m);
-		groups[count - 1].push_back(m);
+
+		string newbin = to_binary_string(stoi(m), var.size());
+		implicant newimp(m, newbin, false);
+
+		groups[count].push_back(newimp);
 	}
 
 	
