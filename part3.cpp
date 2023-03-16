@@ -75,23 +75,8 @@ struct implicant {
 	}
 };
 
-
-vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
+vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
-	vector<int> minterms;
-
-	for (int i = 0; i < table.size(); i++)
-	{
-		if (table[i])
-			minterms.push_back(i);
-	}
-
-	vector<vector<int>> groups(var.size());  // Initialize the groups
-	for (auto m : minterms) {
-		int count = count_ones(m);
-		groups[count - 1].push_back(m);
-	}
-
 	vector<string> primes;
 	vector<vector<string>> primegrps(var.size());
 	for (int i = 0; i < var.size() - 1; i++)
@@ -118,6 +103,26 @@ vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
 			}
 		}
 	}
+}
+
+
+vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
+{
+	vector<int> minterms;
+
+	for (int i = 0; i < table.size(); i++)
+	{
+		if (table[i])
+			minterms.push_back(i);
+	}
+
+	vector<vector<int>> groups(var.size());  // Initialize the groups
+	for (auto m : minterms) {
+		int count = count_ones(m);
+		groups[count - 1].push_back(m);
+	}
+
+	
 	return primegrps;
 }
 
