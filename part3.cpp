@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 #include <bitset>
-#include <sstream>
 #include <algorithm>
+#include <unordered_set>
 
 using namespace std;
 
@@ -109,7 +109,7 @@ void printVector(const vector<vector<implicant>>& vec) {
 	}
 }
 
-vector<string> split(string input, string delim)		//string splitting function, splits function between each sum (delimiter), each product is an element.
+vector<string> split(string input, string delim)//string splitting function, splits function between each sum (delimiter), each product is an element.
 {
 
 	vector<string> terms;
@@ -129,7 +129,7 @@ vector<string> split(string input, string delim)		//string splitting function, s
 // Generates a column of prime implicants from a table of minterms or implicants
 vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
-	vector<string> primes_checker;
+	unordered_set<string> primes_checker;
 	vector<vector<implicant>> primegrps(var.size());
 	bool is_combined;
 	vector<implicant> prime_implicants;
@@ -157,15 +157,15 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 								// Check if the new number is already in the list of primes
 								num1.is_combined = true;
 								num2.is_combined = true;
-								if (find(primes_checker.begin(), primes_checker.end(), new_num) == primes_checker.end())
+								if (primes_checker.find(new_num) == primes_checker.end())
 								{
-									
-									primes_checker.push_back(new_num);
+									primes_checker.insert(new_num);
 									// Create a new implicant and add it to the appropriate group
 									implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
 									primegrps[i].push_back(new_imp);
 
 									is_combined = true;
+
 								}
 							}
 					
