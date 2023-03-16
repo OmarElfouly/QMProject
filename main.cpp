@@ -13,9 +13,4 @@ int main() {
 
 	part4And5(piToM_test, vars, mins);
 
-	vector<int> subset = { 0,1};
-	vector<int> superset = { -1,0,1,2,3 };
-
-	cout << IsSubset(superset, subset);
-
 }
