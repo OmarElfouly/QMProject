@@ -6,140 +6,167 @@
 
 using namespace std;
 // Count the number of 1's in a binary number
-int count_ones(int num) {
+int count_ones(const std::string& int_string) {
+	int num = std::stoi(int_string);
+	std::string binary_string = std::bitset<32>(num).to_string();
 	int count = 0;
-	while (num) {
-		count += num % 2;
-		num /= 2;
+	for (char c : binary_string) {
+		if (c == '1') {
+			count++;
+		}
 	}
 	return count;
 }
+
 // Check if two binary numbers differ by exactly one bit
-bool differ_by_one(int num1, int num2) {
-	int diff = num1 ^ num2;
-	return (count_ones(diff) == 1);
-}
-// check if two strings differ by one character only
-bool isOneCharDiff(string str1, string str2) {
-	int diffCount = 0;
+bool differ_by_one(const string& str1, const string& str2) {
 	if (str1.length() != str2.length()) {
-		return false; 
+		return false; // If the strings are of different lengths, they can't differ by one character
 	}
+	int diff_count = 0;
 	for (int i = 0; i < str1.length(); i++) {
 		if (str1[i] != str2[i]) {
-			diffCount++;
-		}
-		if (diffCount > 1) {
-			return false; 
+			if (str1[i] == '-' || str2[i] == '-') {
+				return false; // If either of the characters is a '-', they can't differ by one character
+			}
+			diff_count++;
 		}
 	}
-	return (diffCount == 1); 
+	return (diff_count == 1); // Return true if there is only one different character
 }
 
-// This function takes two implicants represented as strings of '0's, '1's, and '-',
-// and combines them into a new implicant that has '-'s in the positions where the
-// two implicants differ.
-string combine(string imp1, string imp2) {
-	string result;
-	int n = imp1.size(); // Get the size of the implicants
-	for (int i = 0; i < n; i++) { // Iterate over each character of the implicants
-		if (imp1[i] == imp2[i]) { // If the characters are the same
-			result.push_back(imp1[i]); // Append the character to the new implicant
-		}
-		else { // If the characters are different
-			result.push_back('-'); // Append a '-' to the new implicant
-		}
-	}
-	return result; // Return the new implicant
-}
-
-// This function takes two implicants represented as strings of '0's, '1's, and '-',
-// and returns true if the two implicants differ in only one position, indicating
-// that they can be combined to form a new implicant.
-bool match(string imp1, string imp2) {
-	int n = imp1.size(); // Get the size of the implicants
-	int diff_count = 0; // Initialize a difference count to 0
-	for (int i = 0; i < n; i++) { // Iterate over each character of the implicants
-		if (imp1[i] != imp2[i]) { // If the characters differ
-			diff_count++; // Increment the difference count
-		}
-	}
-	return (diff_count == 1); // Return true if the difference count is 1, false otherwise
-}
-
-string binary_diff(int a, int b, int size) {
-	string binary_a = bitset<32>(a).to_string();
-	string binary_b = bitset<32>(b).to_string();
-
-	// Find the index of the different bit
-	int diff_index = -1;
-	for (int i = 0; i < binary_a.length(); i++) {
-		if (binary_a[i] != binary_b[i]) {
-			diff_index = i;
-			break;
-		}
-	}
-
-	if (diff_index == -1) {
-		// The two binary numbers are the same
+// This function takes in two binary strings of equal length and combines them into a new
+// binary string where '-' is used to represent differing bits
+string combinestring(string a, string b) {
+	// Check that the two strings are the same length
+	if (a.length() != b.length()) {
 		return "";
 	}
-
-	// Replace the different bit with "-"
-	string result = binary_a;
-	result[diff_index] = '-';
-
-	// Remove extra 0s on the left and cap the size if necessary
-	result.erase(0, min(result.find_first_not_of('0'), result.size() - size));
-	if (result.length() < size) {
-		result = string(size - result.length(), '0') + result;
+	// Combine the strings into a new string
+	string result = "";
+	for (int i = 0; i < a.length(); i++) {
+		// If the bits differ, add '-' to the result
+		if (a[i] != b[i]) {
+			result += "-";
+		}
+		// Otherwise, add the matching bit to the result
+		else {
+			result += a[i];
+		}
 	}
-
 	return result;
 }
 
-vector<vector<string>> primeimplicants(vector<bool> table, vector<string> var)
+//converts a decimal number into a binary string, padding with leading zeroes to reach a specified length.
+string to_binary_string(int num, int length) {
+	string binary_str; 
+	while (num > 0) { // convert decimal to binary by repeated division by 2
+		binary_str = to_string(num % 2) + binary_str; // add the remainder to the beginning of the string
+		num /= 2;
+	}
+	while (binary_str.length() < length)  // pad the string with leading zeroes until it reaches the desired length
+	{
+		binary_str = "0" + binary_str;
+	}
+	return binary_str; 
+}
+
+
+void printVector(const vector<vector<implicant>>& vec) {
+	for (const auto& innerVec : vec) {
+		for (const auto& imp : innerVec) {
+
+			for (const auto& str : imp.mincovered) {
+				cout << str;
+			}
+
+			cout << " " << imp.imp << " " << endl;
+		}
+		cout << endl;
+	}
+}
+
+struct implicant {
+	string mincovered;
+	string imp;
+	bool is_combined = false;
+
+	implicant(string m, string i, bool c) {
+		mincovered = m;
+		imp = i;
+		is_combined = c;
+	}
+};
+
+vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
-	vector<int> minterms;
-
-	for (int i = 0; i < table.size(); i++)
-	{
-		if (table[i])
-			minterms.push_back(i);
-	}
-
-	vector<vector<int>> groups(var.size());  // Initialize the groups
-	for (auto m : minterms) {
-		int count = count_ones(m);
-		groups[count - 1].push_back(m);
-	}
-
 	vector<string> primes;
-	vector<vector<string>> primegrps(var.size());
-	for (int i = 0; i < var.size() - 1; i++)
+	vector<vector<implicant>> primegrps(var.size());
+	bool is_combined;
+	vector<implicant> prime_implicants;
+
+	do
 	{
-		if (groups[i].empty() || groups[i + 1].empty())
+		is_combined = false;
+		for (int i = 0; i < var.size() - 1; i++)
+		{
+			if (groups[i].empty() || groups[i + 1].empty())
 			continue;  // Skip empty groups
 
-		for (auto num1 : groups[i])
-		{
-			for (auto num2 : groups[i + 1])
+			for (auto& num1 : groups[i])
 			{
-				if (differ_by_one(num1, num2))
+				for (auto& num2 : groups[i + 1])
 				{
-					// Combine the two numbers into a new number
-					string new_num = binary_diff(num1, num2, var.size());
-					// Check if the new number is already in the list of primes
-					if (find(primes.begin(), primes.end(), new_num) == primes.end())
+					if (differ_by_one(num1.imp, num2.imp))
 					{
-						primes.push_back(new_num);
-						primegrps[i].push_back(new_num);
+						// Combine the two numbers into a new number
+						string new_num = combinestring(num1.imp, num2.imp);
+						// Check if the new number is already in the list of primes
+						num1.is_combined = true;
+						num2.is_combined = true;
+						if (find(primes.begin(), primes.end(), new_num) == primes.end())
+						{
+							primes.push_back(new_num);
 
+
+							implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
+							primegrps[i].push_back(new_imp);
+
+							is_combined = true;
+						}
 					}
 				}
+				if (!num1.is_combined)
+					prime_implicants.push_back(num1);
 			}
 		}
+		printVector(groups);
+		cout << "-------------------------------------------------------" << endl;
+		groups = std::move(primegrps);
+		primegrps.resize(var.size());
+
+	} 
+	while (is_combined);
+
+	return prime_implicants;
+}
+
+
+vector<vector<string>> primeimplicants(vector<string> minterms , vector<string> var)
+{
+
+
+	vector<vector<implicant>> groups(var.size() + 1); // Initialize the groups
+	for (auto m : minterms) {
+		int count = count_ones(m);
+
+		string newbin = to_binary_string(stoi(m), var.size());
+		implicant newimp(m, newbin, false);
+
+		groups[count].push_back(newimp);
 	}
+
+	
 	return primegrps;
 }
 
