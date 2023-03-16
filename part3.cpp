@@ -78,26 +78,35 @@ struct implicant {
 vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
 	vector<string> primes;
-	vector<vector<string>> primegrps(var.size());
+	vector<vector<implicant>> primegrps(var.size());
+	bool is_combined;
+	vector<implicant> prime_implicants;
+
 	for (int i = 0; i < var.size() - 1; i++)
 	{
 		if (groups[i].empty() || groups[i + 1].empty())
 			continue;  // Skip empty groups
 
-		for (auto num1 : groups[i])
+		for (auto& num1 : groups[i])
 		{
-			for (auto num2 : groups[i + 1])
+			for (auto& num2 : groups[i + 1])
 			{
-				if (differ_by_one(num1, num2))
+				if (differ_by_one(num1.imp, num2.imp))
 				{
 					// Combine the two numbers into a new number
-					string new_num = binary_diff(num1, num2, var.size());
+					string new_num = combinestring(num1.imp, num2.imp);
 					// Check if the new number is already in the list of primes
+					num1.is_combined = true;
+					num2.is_combined = true;
 					if (find(primes.begin(), primes.end(), new_num) == primes.end())
 					{
 						primes.push_back(new_num);
-						primegrps[i].push_back(new_num);
 
+
+						implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
+						primegrps[i].push_back(new_imp);
+
+						is_combined = true;
 					}
 				}
 			}
