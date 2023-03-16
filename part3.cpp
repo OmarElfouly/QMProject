@@ -95,7 +95,11 @@ void printVector(const vector<vector<implicant>>& vec) {
 				cout << str;
 			}
 
-			cout << " " << imp.imp << " " << endl;
+			cout << " " << imp.imp << " ";
+			if (!imp.is_combined)
+				cout << "*" << endl;
+			else
+				cout << endl;
 		}
 		cout << endl;
 	}
