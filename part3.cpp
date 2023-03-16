@@ -86,36 +86,39 @@ string to_binary_string(int num, int length) {
 	return binary_str; 
 }
 
-
 void printVector(const vector<vector<implicant>>& vec) {
+	// Loop over each vector inside the outer vector
 	for (const auto& innerVec : vec) {
+		// Loop over each implicant inside the inner vector
 		for (const auto& imp : innerVec) {
 
+			// Loop over each string inside the mincovered vector of the implicant
 			for (const auto& str : imp.mincovered) {
-				cout << str;
+				cout << str; 
 			}
 
-			cout << " " << imp.imp << " ";
+			cout << " " << imp.imp << " "; 
+
+			// Check if the implicant is combined or not and prints a * next to it to indicate that its prime
 			if (!imp.is_combined)
 				cout << "*" << endl;
 			else
 				cout << endl;
-		}
-		cout << endl;
+		}// print an extra newline after each inner vector
+		cout << endl; 
 	}
 }
 
+// This function takes a string containing comma-separated characters and returns a vector containing each character.
 vector<char> parseCommaSeparatedString(const string& str) {
 	vector<char> chars;
-	stringstream ss(str);
-	string token;
-	while (getline(ss, token, ',')) {
-		chars.push_back(token[0]);
+	stringstream ss(str); // create a stringstream to read the input string
+	string token; // create a string to hold the current token (character)
+	while (getline(ss, token, ',')) { // read each comma-separated token
+		chars.push_back(token[0]); // add the first character of each token to the vector
 	}
 	return chars;
 }
-
-
 
 vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
@@ -129,29 +132,32 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 		is_combined = false;
 		for (int i = 0; i < var.size() - 1; i++)
 		{
-			if (groups[i].empty() || groups[i + 1].empty())
+			if (groups[i].empty())
 			continue;  // Skip empty groups
 
 			for (auto& num1 : groups[i])
 			{
 				for (auto& num2 : groups[i + 1])
 				{
-					if (differ_by_one(num1.imp, num2.imp))
+					if (i < groups.size() - 1)
 					{
-						// Combine the two numbers into a new number
-						string new_num = combinestring(num1.imp, num2.imp);
-						// Check if the new number is already in the list of primes
-						num1.is_combined = true;
-						num2.is_combined = true;
-						if (find(primes.begin(), primes.end(), new_num) == primes.end())
+						if (differ_by_one(num1.imp, num2.imp))
 						{
-							primes.push_back(new_num);
+							// Combine the two numbers into a new number
+							string new_num = combinestring(num1.imp, num2.imp);
+							// Check if the new number is already in the list of primes
+							num1.is_combined = true;
+							num2.is_combined = true;
+							if (find(primes.begin(), primes.end(), new_num) == primes.end())
+							{
+								primes.push_back(new_num);
 
 
-							implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
-							primegrps[i].push_back(new_imp);
+								implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
+								primegrps[i].push_back(new_imp);
 
-							is_combined = true;
+								is_combined = true;
+							}
 						}
 					}
 				}
