@@ -106,13 +106,21 @@ void part4And5(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 	while (mintermToPI.size() > 0) {// while there still exist uncovered minterms...
 		//remove dominating columns
 		
-		for (auto x : mintermToPI) {
-			for (auto y : mintermToPI) {
-				if (x.first != y.first&& IsSubset<string>(x.second, y.second)) {
-					mintermToPI.erase(x.first);
-					deleteMinterm(PIToMinterm, x.first);
+		auto a = mintermToPI.begin();
+		while (a!= mintermToPI.end()) {
+			auto b = mintermToPI.begin();
+			while (b!= mintermToPI.end()) {
+				if (a->first != b->first&& IsSubset<string>( b->second, a->second)) {
+					int bName = b->first;
+					b = mintermToPI.begin();
+					mintermToPI.erase(bName);
+					deleteMinterm(PIToMinterm, bName);
+				}
+				else {
+					b++;
 				}
 			}
+			a++;
 		}
 
 		//remove dominated rows
@@ -122,10 +130,10 @@ void part4And5(map<string, vector<int>> PIToMinterm, string vars, vector<int> mi
 			while(y!=PIToMinterm.end()) {
 				if (x->first != y->first && IsSubset<int>(x->second, y->second)) {
 					string yName = y->first;
-					auto newy = PIToMinterm.begin();
+					y = PIToMinterm.begin();
 					PIToMinterm.erase(yName);
 					deletePI(mintermToPI,yName);
-					y = newy;
+					
 				}
 				else {
 					y++;
