@@ -109,20 +109,27 @@ void printVector(const vector<vector<implicant>>& vec) {
 	}
 }
 
-// This function takes a string containing comma-separated characters and returns a vector containing each character.
-vector<char> parseCommaSeparatedString(const string& str) {
-	vector<char> chars;
-	stringstream ss(str); // create a stringstream to read the input string
-	string token; // create a string to hold the current token (character)
-	while (getline(ss, token, ',')) { // read each comma-separated token
-		chars.push_back(token[0]); // add the first character of each token to the vector
+vector<string> split(string input, string delim)		//string splitting function, splits function between each sum (delimiter), each product is an element.
+{
+
+	vector<string> terms;
+	string delimiter = delim;
+	size_t pos = 0;
+	string token;
+	while ((pos = input.find(delimiter)) != string::npos) {
+		token = input.substr(0, pos);
+		terms.push_back(token);
+		input.erase(0, pos + delimiter.length());
 	}
-	return chars;
+	terms.push_back(input);
+
+	return terms;
 }
 
+// Generates a column of prime implicants from a table of minterms or implicants
 vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
-	vector<string> primes;
+	vector<string> primes_checker;
 	vector<vector<implicant>> primegrps(var.size());
 	bool is_combined;
 	vector<implicant> prime_implicants;
@@ -130,31 +137,31 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 	do
 	{
 		is_combined = false;
+		// Iterate through adjacent pairs of groups of implicants or minterms
 		for (int i = 0; i < var.size() - 1; i++)
 		{
 			if (groups[i].empty())
 			continue;  // Skip empty groups
 
+			// Iterate through all pairs of implicants in the two groups
 			for (auto& num1 : groups[i])
 			{
-				if (i < groups.size() - 1)
+				if (i < groups.size() - 1) //checks if the group[i+1] exists 
 				{
 					for (auto& num2 : groups[i + 1])
 					{
-
-						
-							if (differ_by_one(num1.imp, num2.imp))
+							if (differ_by_one(num1.imp, num2.imp)) // Check if the implicants differ by exactly one bit
 							{
-								// Combine the two numbers into a new number
+								// Combine the two implicants into a new implicant
 								string new_num = combinestring(num1.imp, num2.imp);
 								// Check if the new number is already in the list of primes
 								num1.is_combined = true;
 								num2.is_combined = true;
-								if (find(primes.begin(), primes.end(), new_num) == primes.end())
+								if (find(primes_checker.begin(), primes_checker.end(), new_num) == primes_checker.end())
 								{
-									primes.push_back(new_num);
-
-
+									
+									primes_checker.push_back(new_num);
+									// Create a new implicant and add it to the appropriate group
 									implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
 									primegrps[i].push_back(new_imp);
 
@@ -170,11 +177,12 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 		}
 		printVector(groups);
 		cout << "-------------------------------------------------------" << endl;
+		// Update the groups of implicants with the new prime implicants
 		groups = std::move(primegrps);
 		primegrps.resize(var.size());
 
 	} 
-	while (is_combined);
+	while (is_combined); // continue until there are no more combined implicants
 
 	return prime_implicants;
 }
@@ -211,14 +219,14 @@ map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string
 	vector<implicant> prime_implicants;
 	prime_implicants = generate_column(groups, var);
 
-	vector<char> mins;
+	vector<string> mins;
 	for (const auto& imp : prime_implicants)
 	{
-		mins = parseCommaSeparatedString(imp.mincovered);
+		mins = split(imp.mincovered, ",");
 		vector<int> intVec(mins.size());
 
 		transform(mins.begin(), mins.end(), intVec.begin(),
-			[](char c) { return c - '0'; });
+			[](const string& str) { return stoi(str); });
 
 		result[imp.imp] = intVec;
 	}
