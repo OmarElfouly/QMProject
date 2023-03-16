@@ -4,6 +4,7 @@
 #include <string>
 #include <bitset>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -166,11 +167,11 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 }
 
 
-map<string, vector<char>> primeimplicants(vector<string> minterms , vector<string> var)
+map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string> var)
 {
 	int numofmin = minterms.size();
 
-	map<string, vector<char>> result;
+	map<string, vector<int>> result;
 
 	if (numofmin == 1 << var.size())
 	{
@@ -201,9 +202,22 @@ map<string, vector<char>> primeimplicants(vector<string> minterms , vector<strin
 	for (const auto& imp : prime_implicants)
 	{
 		mins = parseCommaSeparatedString(imp.mincovered);
-		
-			result[imp.imp] = mins;
+		vector<int> intVec(mins.size());
+
+		transform(mins.begin(), mins.end(), intVec.begin(),
+			[](char c) { return c - '0'; });
+
+		result[imp.imp] = intVec;
 	}
+
+	for (const auto& kv : result) {
+		cout << kv.first << ": ";
+		for (char c : kv.second) {
+			cout << c << " ";
+		}
+		cout << endl;
+	}
+
 
 	
 	return result; 
