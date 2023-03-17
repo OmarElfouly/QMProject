@@ -131,7 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="part3.cpp" />
     <ClCompile Include="part_1_2.cpp" />
   </ItemGroup>
   <ItemGroup>
