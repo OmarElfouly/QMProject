@@ -6,6 +6,7 @@
 #include <cctype>
 #include <map>
 #include <bitset>
+#include <set>
 
 using namespace std;
 
@@ -158,6 +159,40 @@ void flipVector(vector<vector<int>>& vec, int i, int j)
 		vec[i][j] = 0;
 }
 
+void printSoP(vector<int> minterms, int varCount, vector<char> variableList)
+{
+	cout << "Canonical SoP: ";
+	for (int i = 0; i < minterms.size(); i++) {
+		bitset<10> bits(minterms[i]);
+		for (int j = 0; j < varCount; j++) {
+			cout << variableList[j];
+			if (bits[varCount - 1 - j] == 0)
+				cout << "'";
+		}
+		if (i < minterms.size() - 1)
+			cout << " + ";
+	}
+	cout << endl;
+}
+
+void printPoS(vector<int> maxterms, int varCount, vector<char> variableList)
+{
+	cout << "Canonical PoS: ";
+	for (int i = 0; i < maxterms.size(); i++) {
+		bitset<10> bits(maxterms[i]);
+		cout << "(";
+		for (int j = 0; j < varCount; j++) {
+			cout << variableList[j];
+			if (bits[varCount - 1 - j] == 1)
+				cout << "'";
+			if (j < varCount - 1)
+				cout << " + ";
+		}
+		cout << ")";
+	}
+	cout << endl;
+}
+
 vector<int> truthTable(string input, vector<string>& terms, map<char, int>& index)
 {
 	vector<int> minterms;
@@ -172,14 +207,22 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		index[variableList[i]] = i;					//giving each character its index (hierarchy). A/0 is the MSB.
 	}
 
+	int tempIndex = 0;
+
 	vector<vector<int>> dominance(2, vector<int>(varCount, 0));
 	for (int i = 0; i < terms.size(); i++) {					//checking if a term has both a normal variable and the same variable NOT'ed.
 		dominance = vector<vector<int>>(2, vector<int>(varCount, 0));
 		for (int j = 0; j < terms[i].size(); j++) {
-			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39)
+			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39) {
+				tempIndex = index[terms[i][j]];
 				dominance[0][index[terms[i][j]]] = 1;
+			}
+			else if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] == 39) {
+				tempIndex = index[terms[i][j]];
+				dominance[1][tempIndex] = 1;
+			}
 			else if (j < terms[i].size() && terms[i][j + 1] == 39)
-				flipVector(dominance, 1, index[terms[i][j]]);
+				flipVector(dominance, 1, tempIndex);
 		}
 		for (int k = 0; k < dominance[0].size(); k++) {
 			if (dominance[0][k] == 1 && dominance[1][k] == 1) {
@@ -196,21 +239,25 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 	cout << "f" << endl;
 
 	if (terms.empty()) {
+		vector<int> maxterms;
 		for (int i = 0; i < 1 << varCount; i++) {
+			maxterms.push_back(i);
 			bitset<10> bits(i);
 			for (int i = varCount - 1; i >= 0; i--) {
 				cout << bits[i] << "\t";
 			}
 			cout << "0" << endl;
 		}
-		cout << "f = 0";
+		cout << "f = 0" << endl;
+		cout << "Canonical SoP: 0" << endl;
+		printPoS(maxterms, varCount, variableList);
+
 		return minterms;
 	}
 
 	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
 
-
-	int tempIndex = 0;
+	tempIndex = 0;
 
 	for (int i = 0; i < terms.size(); i++) {
 		for (int j = 0; j < terms[i].size(); j++) {
@@ -224,9 +271,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		}
 	}
 
-
 	bool isMinterm = true;
-
 
 	for (int i = 0; i < 1 << varCount; i++) {
 		bitset<10> bits(i);
@@ -252,8 +297,26 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		else
 			cout << "0" << endl;
 	}
-	if (minterms.size() == 1 << varCount)
-		cout << "f = 1";
+
+	if (minterms.size() == 1 << varCount) {
+		cout << "f = 1" << endl;
+		printSoP(minterms, varCount, variableList);
+		cout << "Canonical PoS: 0" << endl;
+
+		return minterms;
+	}
+
+	printSoP(minterms, varCount, variableList);
+
+	set<int> mins(minterms.begin(), minterms.end());
+	vector<int> maxterms;
+
+	for (int i = 0; i < 1 << varCount; i++) {
+		if (mins.find(i) == mins.end())
+			maxterms.push_back(i);
+	}
+
+	printPoS(maxterms, varCount, variableList);
 
 	return minterms;
 }
