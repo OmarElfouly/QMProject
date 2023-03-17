@@ -22,19 +22,6 @@ struct implicant {
 };
 
 // Count the number of 1's in a binary number
-/*
-int count_ones(const std::string& int_string) {
-	int num = std::stoi(int_string);
-	std::string binary_string = std::bitset<32>(num).to_string();
-	int count = 0;
-	for (char c : binary_string) {
-		if (c == '1') {
-			count++;
-		}
-	}
-	return count;
-}
-*/
 int count_ones(int num) {
 	int count = 0;
 	while (num != 0) {
