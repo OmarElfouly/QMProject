@@ -178,6 +178,8 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		for (int j = 0; j < terms[i].size(); j++) {
 			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39)
 				dominance[0][index[terms[i][j]]] = 1;
+			else if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] == 39) 
+				dominance[1][index[terms[i][j]]] = 1;
 			else if (j < terms[i].size() && terms[i][j + 1] == 39)
 				flipVector(dominance, 1, index[terms[i][j]]);
 		}
