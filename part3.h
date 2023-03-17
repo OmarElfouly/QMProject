@@ -1,4 +1,5 @@
-/*#include <iostream>
+#pragma once
+#include <iostream>
 #include <map>
 #include <vector>
 #include <string>
@@ -21,6 +22,7 @@ struct implicant {
 };
 
 // Count the number of 1's in a binary number
+/*
 int count_ones(const std::string& int_string) {
 	int num = std::stoi(int_string);
 	std::string binary_string = std::bitset<32>(num).to_string();
@@ -32,7 +34,15 @@ int count_ones(const std::string& int_string) {
 	}
 	return count;
 }
-
+*/
+int count_ones(int num) {
+	int count = 0;
+	while (num != 0) {
+		count += (num & 1);
+		num >>= 1;
+	}
+	return count;
+}
 // Check if two binary numbers differ by exactly one bit
 bool differ_by_one(const string& str1, const string& str2) {
 	if (str1.length() != str2.length()) {
@@ -74,7 +84,7 @@ string combinestring(string a, string b) {
 
 //converts a decimal number into a binary string, padding with leading zeroes to reach a specified length.
 string to_binary_string(int num, int length) {
-	string binary_str; 
+	string binary_str;
 	while (num > 0) { // convert decimal to binary by repeated division by 2
 		binary_str = to_string(num % 2) + binary_str; // add the remainder to the beginning of the string
 		num /= 2;
@@ -83,7 +93,7 @@ string to_binary_string(int num, int length) {
 	{
 		binary_str = "0" + binary_str;
 	}
-	return binary_str; 
+	return binary_str;
 }
 
 void printVector(const vector<vector<implicant>>& vec) {
@@ -94,10 +104,10 @@ void printVector(const vector<vector<implicant>>& vec) {
 
 			// Loop over each string inside the mincovered vector of the implicant
 			for (const auto& str : imp.mincovered) {
-				cout << str; 
+				cout << str;
 			}
 
-			cout << " " << imp.imp << " "; 
+			cout << " " << imp.imp << " ";
 
 			// Check if the implicant is combined or not and prints a * next to it to indicate that its prime
 			if (!imp.is_combined)
@@ -105,11 +115,11 @@ void printVector(const vector<vector<implicant>>& vec) {
 			else
 				cout << endl;
 		}// print an extra newline after each inner vector
-		cout << endl; 
+		cout << endl;
 	}
 }
 
-vector<string> split(string input, string delim)//string splitting function, splits function between each sum (delimiter), each product is an element.
+vector<string> split1(string input, string delim)//string splitting function, splits function between each sum (delimiter), each product is an element.
 {
 
 	vector<string> terms;
@@ -129,66 +139,63 @@ vector<string> split(string input, string delim)//string splitting function, spl
 // Generates a column of prime implicants from a table of minterms or implicants
 vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
 {
-	unordered_set<string> primes_checker;
+	vector<string> primes;
 	vector<vector<implicant>> primegrps(var.size());
 	bool is_combined;
 	vector<implicant> prime_implicants;
+	unordered_set<string> primes_checker;
 
 	do
 	{
 		is_combined = false;
-		// Iterate through adjacent pairs of groups of implicants or minterms
-		for (int i = 0; i < var.size() - 1; i++)
+		for (int i = 0; i < groups.size(); i++)
 		{
 			if (groups[i].empty())
-			continue;  // Skip empty groups
+				continue;  // Skip empty groups
 
-			// Iterate through all pairs of implicants in the two groups
 			for (auto& num1 : groups[i])
 			{
-				if (i < groups.size() - 1) //checks if the group[i+1] exists 
+				if (i < groups.size() - 1)
 				{
 					for (auto& num2 : groups[i + 1])
 					{
-							if (differ_by_one(num1.imp, num2.imp)) // Check if the implicants differ by exactly one bit
+						if (differ_by_one(num1.imp, num2.imp))
+						{
+							// Combine the two numbers into a new number
+							string new_num = combinestring(num1.imp, num2.imp);
+							//flags combined implicants as combined 
+							num1.is_combined = true;
+							num2.is_combined = true;
+							if (primes_checker.find(new_num) == primes_checker.end())
 							{
-								// Combine the two implicants into a new implicant
-								string new_num = combinestring(num1.imp, num2.imp);
-								// Check if the new number is already in the list of primes
-								num1.is_combined = true;
-								num2.is_combined = true;
-								if (primes_checker.find(new_num) == primes_checker.end())
-								{
-									primes_checker.insert(new_num);
-									// Create a new implicant and add it to the appropriate group
-									implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
-									primegrps[i].push_back(new_imp);
+								primes_checker.insert(new_num);
+								// Create a new implicant and add it to the appropriate group
+								implicant new_imp(num1.mincovered + "," + num2.mincovered, new_num, false);
+								primegrps[i].push_back(new_imp);
 
-									is_combined = true;
+								is_combined = true;
 
-								}
 							}
-					
+						}
 					}
 				}
 				if (!num1.is_combined)
 					prime_implicants.push_back(num1);
 			}
+
 		}
+
 		printVector(groups);
 		cout << "-------------------------------------------------------" << endl;
-		// Update the groups of implicants with the new prime implicants
-		groups = move(primegrps);
+		groups = std::move(primegrps);
 		primegrps.resize(var.size());
-
-	} 
-	while (is_combined); // continue until there are no more combined implicants
+	} while (is_combined);
 
 	return prime_implicants;
 }
 
 
-map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string> var)
+map<string, vector<int>> primeimplicants(vector<int> minterms, vector<string> var)
 {
 	int numofmin = minterms.size();
 
@@ -204,17 +211,18 @@ map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string
 	{
 		return result;
 	}
-		
+
 
 	vector<vector<implicant>> groups(var.size() + 1); // Initialize the groups
 	for (auto m : minterms) {
 		int count = count_ones(m);
 
-		string newbin = to_binary_string(stoi(m), var.size());
-		implicant newimp(m, newbin, false);
+		string newbin = to_binary_string(m, var.size());
+		implicant newimp(to_string(m), newbin, false);
 
 		groups[count].push_back(newimp);
 	}
+
 
 	vector<implicant> prime_implicants;
 	prime_implicants = generate_column(groups, var);
@@ -222,7 +230,7 @@ map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string
 	vector<string> mins;
 	for (const auto& imp : prime_implicants)
 	{
-		mins = split(imp.mincovered, ",");
+		mins = split1(imp.mincovered, ",");
 		vector<int> intVec(mins.size());
 
 		transform(mins.begin(), mins.end(), intVec.begin(),
@@ -230,6 +238,23 @@ map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string
 
 		result[imp.imp] = intVec;
 	}
+	map<string, vector<int>> newResult;
+	for (auto it = result.begin(); it != result.end(); it++) {
+		string newPI = "";
+		for (int count = 0; count < it->first.length();count++) {
+			if (it->first[count] == '-') {
+				
+			}
+			else if (it->first[count] == '1') {
+				newPI = newPI + var[count];
+			}
+			else if (it->first[count] == '0') {
+				newPI = newPI + var[count] + "'";
+			}
+		}
+		newResult[newPI] = it->second;
+	}
+	result = move(newResult);
 
 	for (const auto& kv : result) {
 		cout << kv.first << ": ";
@@ -239,9 +264,7 @@ map<string, vector<int>> primeimplicants(vector<string> minterms , vector<string
 
 		cout << endl;
 	}
+	cout << endl;
 
-	
-	return result; 
+	return result;
 }
-
-*/
