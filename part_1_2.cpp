@@ -159,6 +159,40 @@ void flipVector(vector<vector<int>>& vec, int i, int j)
 		vec[i][j] = 0;
 }
 
+void printSoP(vector<int> minterms, int varCount, vector<char> variableList)
+{
+	cout << "Canonical SoP: ";
+	for (int i = 0; i < minterms.size(); i++) {
+		bitset<10> bits(minterms[i]);
+		for (int j = 0; j < varCount; j++) {
+			cout << variableList[j];
+			if (bits[varCount - 1 - j] == 0)
+				cout << "'";
+		}
+		if (i < minterms.size() - 1)
+			cout << " + ";
+	}
+	cout << endl;
+}
+
+void printPoS(vector<int> maxterms, int varCount, vector<char> variableList)
+{
+	cout << "Canonical PoS: ";
+	for (int i = 0; i < maxterms.size(); i++) {
+		bitset<10> bits(maxterms[i]);
+		cout << "(";
+		for (int j = 0; j < varCount; j++) {
+			cout << variableList[j];
+			if (bits[varCount - 1 - j] == 1)
+				cout << "'";
+			if (j < varCount - 1)
+				cout << " + ";
+		}
+		cout << ")";
+	}
+	cout << endl;
+}
+
 vector<int> truthTable(string input, vector<string>& terms, map<char, int>& index)
 {
 	vector<int> minterms;
@@ -205,7 +239,9 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 	cout << "f" << endl;
 
 	if (terms.empty()) {
+		vector<int> maxterms;
 		for (int i = 0; i < 1 << varCount; i++) {
+			maxterms.push_back(i);
 			bitset<10> bits(i);
 			for (int i = varCount - 1; i >= 0; i--) {
 				cout << bits[i] << "\t";
@@ -214,6 +250,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		}
 		cout << "f = 0" << endl;
 		cout << "Canonical SoP: 0" << endl;
+		printPoS(maxterms, varCount, variableList);
 
 		return minterms;
 	}
@@ -263,25 +300,13 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 
 	if (minterms.size() == 1 << varCount) {
 		cout << "f = 1" << endl;
-		cout << "Canonical SoP: 1" << endl;
+		printSoP(minterms, varCount, variableList);
+		cout << "Canonical PoS: 0" << endl;
 
 		return minterms;
 	}
 
-	cout << "Canonical SoP: ";
-
-	for (int i = 0; i < minterms.size(); i++) {
-		bitset<10> bits(minterms[i]);
-		for (int j = 0; j < varCount; j++) {
-			cout << variableList[j];
-			if (bits[varCount - 1 - j] == 0)
-				cout << "'";
-		}
-		if (i < minterms.size() - 1)
-			cout << " + ";
-	}
-
-	cout << "\nCanonical PoS: ";
+	printSoP(minterms, varCount, variableList);
 
 	set<int> mins(minterms.begin(), minterms.end());
 	vector<int> maxterms;
@@ -291,18 +316,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 			maxterms.push_back(i);
 	}
 
-	for (int i = 0; i < maxterms.size(); i++) {
-		bitset<10> bits(maxterms[i]);
-		cout << "(";
-		for (int j = 0; j < varCount; j++) {
-			cout << variableList[j];
-			if (bits[varCount - 1 - j] == 1)
-				cout << "'";
-			if (j < varCount - 1)
-				cout << " + ";
-		}
-		cout << ")";
-	}
+	printPoS(maxterms, varCount, variableList);
 
 	return minterms;
 }
