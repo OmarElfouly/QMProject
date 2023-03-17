@@ -3,7 +3,7 @@
 #include "part3.h"
 
 int main() {
-	map<string, vector<int>> piToM_test = {
+	/*map<string, vector<int>> piToM_test = {
 		{"AB",{0,4}},
 		{"AC",{2,4}},
 		{"AF",{0,1,2}},
@@ -17,5 +17,19 @@ int main() {
 	vector<string> var = { "a" , "b" ,"c","d", };
 	cout << "\n\n\n";
 	part4And5(primeimplicants(minterms, var));
+	*/
+	string input;
+	getline(cin, input);
+	vector<string> terms; map<char, int> index;
+	vector<int> minterms;
+	if (validation(input, terms, index)) {
+		minterms = truthTable(input, terms, index);
+		vector<char> var = varList(input);
+		part4And5(primeimplicants(minterms, var));
+	}
+	else {
+		cout << "Invalid input." << endl;
+		//return;
+	}
 
 }

@@ -137,7 +137,7 @@ vector<string> split1(string input, string delim)//string splitting function, sp
 }
 
 // Generates a column of prime implicants from a table of minterms or implicants
-vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<string> var)
+vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<char> var)
 {
 	vector<string> primes;
 	vector<vector<implicant>> primegrps(var.size());
@@ -195,7 +195,7 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<stri
 }
 
 
-map<string, vector<int>> primeimplicants(vector<int> minterms, vector<string> var)
+map<string, vector<int>> primeimplicants(vector<int> minterms, vector<char> var)
 {
 	int numofmin = minterms.size();
 
