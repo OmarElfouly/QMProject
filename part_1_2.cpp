@@ -172,16 +172,22 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		index[variableList[i]] = i;					//giving each character its index (hierarchy). A/0 is the MSB.
 	}
 
+	int tempIndex = 0;
+
 	vector<vector<int>> dominance(2, vector<int>(varCount, 0));
 	for (int i = 0; i < terms.size(); i++) {					//checking if a term has both a normal variable and the same variable NOT'ed.
 		dominance = vector<vector<int>>(2, vector<int>(varCount, 0));
 		for (int j = 0; j < terms[i].size(); j++) {
-			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39)
+			if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] != 39) {
+				tempIndex = index[terms[i][j]];
 				dominance[0][index[terms[i][j]]] = 1;
-			else if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] == 39) 
-				dominance[1][index[terms[i][j]]] = 1;
+			}
+			else if (j < terms[i].size() && terms[i][j] != 39 && terms[i][j + 1] == 39) {
+				tempIndex = index[terms[i][j]];
+				dominance[1][tempIndex] = 1;
+			}
 			else if (j < terms[i].size() && terms[i][j + 1] == 39)
-				flipVector(dominance, 1, index[terms[i][j]]);
+				flipVector(dominance, 1, tempIndex);
 		}
 		for (int k = 0; k < dominance[0].size(); k++) {
 			if (dominance[0][k] == 1 && dominance[1][k] == 1) {
@@ -212,7 +218,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
 
 
-	int tempIndex = 0;
+	tempIndex = 0;
 
 	for (int i = 0; i < terms.size(); i++) {
 		for (int j = 0; j < terms[i].size(); j++) {
