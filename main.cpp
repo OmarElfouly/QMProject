@@ -14,7 +14,7 @@ int main() {
 
 	part4And5(piToM_test);
 	vector<int> minterms = { 0, 4,8,5,6,9,10,7,13,15 };
-	vector<string> var = { "a" , "b" ,"c","d", };
+	vector<char> var = { 'a' , 'b' ,'c','d' };
 	cout << "\n\n\n";
 	part4And5(primeimplicants(minterms, var));
 	*/

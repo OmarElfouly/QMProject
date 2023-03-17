@@ -8,14 +8,14 @@
 using namespace std;
 
 template <typename T>
-bool IsSubset(vector<T> maybeSuperset, vector<T> maybeSubset)
+bool IsSubset(vector<T> maybeSub, vector<T> maybeSuper)
 {
 	/*if (maybeSubset.size() == 0) {
 		return false;
 	}*/
-	sort(maybeSubset.begin(), maybeSubset.end());
-	sort(maybeSuperset.begin(), maybeSuperset.end());
-	return includes(maybeSubset.begin(), maybeSubset.end(), maybeSuperset.begin(), maybeSuperset.end());
+	sort(maybeSuper.begin(), maybeSuper.end());
+	sort(maybeSub.begin(), maybeSub.end());
+	return includes(maybeSuper.begin(), maybeSuper.end(), maybeSub.begin(), maybeSub.end());
 }
 
 
@@ -60,14 +60,14 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 	}
 
 	// first we find all epis
-	vector<string> EPIS;
+	set<string> EPIS;
 	bool flag = false;
 	set<int> mintermsToErase;
 
 	for (auto minterm : mintermToPI) {
 		if (minterm.second.size() == 1) {// if there is only a single PI covering this minterm
 			string pi = minterm.second.front();
-			EPIS.push_back(pi);
+			EPIS.insert(pi);
 			mintermsToErase.insert(minterm.first);
 			flag = true;
 		}
@@ -105,17 +105,17 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 		cout << "-\tm" << min.first << endl;
 	}
 	//Part 5 now requires us to repeat this process until there are no remaining minterms
-	vector<string> finalAnswer = EPIS;
+	set<string> finalAnswer = EPIS;
 
 
 	while (mintermToPI.size() > 0) {// while there still exist uncovered minterms...
-		//remove dominating columns
+		//remove dominating columns, i.e super set
 		
 		auto a = mintermToPI.begin();
 		while (a!= mintermToPI.end()) {
 			auto b = mintermToPI.begin();
 			while (b!= mintermToPI.end()) {
-				if (a->first != b->first&& IsSubset<string>( b->second, a->second)) {
+				if (a->first != b->first&& IsSubset<string>( a->second, b->second)) {
 					int bName = b->first;
 					b = mintermToPI.begin();
 					mintermToPI.erase(bName);
@@ -133,11 +133,12 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 		while ( x!=PIToMinterm.end()) {
 			auto y = PIToMinterm.begin();
 			while(y!=PIToMinterm.end()) {
-				if (x->first != y->first && IsSubset<int>(x->second, y->second)) {
+				if (x->first != y->first && IsSubset<int>(y->second, x->second)) {
 					string yName = y->first;
-					y = PIToMinterm.begin();
+					
 					PIToMinterm.erase(yName);
 					deletePI(mintermToPI,yName);
+					y = PIToMinterm.begin();
 					
 				}
 				else {
@@ -154,7 +155,7 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 		for (auto minterm : mintermToPI) {
 			if (minterm.second.size() == 1) {// if there is only a single PI covering this minterm
 				string pi = minterm.second.front();
-				finalAnswer.push_back(pi);// add the pi to list of epis
+				finalAnswer.insert(pi);// add the pi to list of epis
 				piToErase.push_back(pi);
 				mintermsToErase.push_back(minterm.first);
 			}
@@ -175,7 +176,7 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 
 
 	cout << "Final answer is:\n";
-	cout << finalAnswer.front();
+	cout << *finalAnswer.begin();
 	finalAnswer.erase(finalAnswer.begin());
 	for (auto term : finalAnswer) {
 		cout << " + "<<term;
