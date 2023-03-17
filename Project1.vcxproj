@@ -131,9 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="part_1_2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="part1_2.h" />
     <ClInclude Include="part3.h" />
     <ClInclude Include="part4.h" />
   </ItemGroup>

@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>
@@ -12,7 +13,6 @@ using namespace std;
 
 vector<string> split(string input, string delim)		//string splitting function, splits function between each sum (delimiter), each product is an element.
 {
-
 	vector<string> terms;
 	string delimiter = delim;
 	size_t pos = 0;
@@ -256,7 +256,6 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 	}
 
 	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
-
 	tempIndex = 0;
 
 	for (int i = 0; i < terms.size(); i++) {
@@ -298,7 +297,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 			cout << "0" << endl;
 	}
 
-	if (minterms.size() == 1 << varCount) {
+	if (minterms.size() == 1LL << varCount) {
 		cout << "f = 1" << endl;
 		printSoP(minterms, varCount, variableList);
 		cout << "Canonical PoS: 0" << endl;
