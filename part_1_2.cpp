@@ -6,6 +6,7 @@
 #include <cctype>
 #include <map>
 #include <bitset>
+#include <set>
 
 using namespace std;
 
@@ -219,7 +220,6 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 
 	vector<vector<int>> binTerms(terms.size(), vector<int>(varCount, 2));	//all terms in binary. Initialize all elements with 2, which will be my marker for "don't care" terms.
 
-
 	tempIndex = 0;
 
 	for (int i = 0; i < terms.size(); i++) {
@@ -234,9 +234,7 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		}
 	}
 
-
 	bool isMinterm = true;
-
 
 	for (int i = 0; i < 1 << varCount; i++) {
 		bitset<10> bits(i);
@@ -281,6 +279,29 @@ vector<int> truthTable(string input, vector<string>& terms, map<char, int>& inde
 		}
 		if (i < minterms.size() - 1)
 			cout << " + ";
+	}
+
+	cout << "\nCanonical PoS: ";
+
+	set<int> mins(minterms.begin(), minterms.end());
+	vector<int> maxterms;
+
+	for (int i = 0; i < 1 << varCount; i++) {
+		if (mins.find(i) == mins.end())
+			maxterms.push_back(i);
+	}
+
+	for (int i = 0; i < maxterms.size(); i++) {
+		bitset<10> bits(maxterms[i]);
+		cout << "(";
+		for (int j = 0; j < varCount; j++) {
+			cout << variableList[j];
+			if (bits[varCount - 1 - j] == 1)
+				cout << "'";
+			if (j < varCount - 1)
+				cout << " + ";
+		}
+		cout << ")";
 	}
 
 	return minterms;
