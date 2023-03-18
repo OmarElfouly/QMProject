@@ -106,12 +106,14 @@ their shorthand notations.
 
 #### Inputs:
 
-minterms: a vector of integers representing the minterms of a boolean function
-var: a vector of characters representing the variables of the boolean function
-print: a string that determines whether to print intermediate steps of the function
+- minterms: a vector of integers representing the minterms of a boolean function
+
+- var: a vector of characters representing the variables of the boolean function
+
+- print: a string that determines whether to print intermediate steps of the function
 #### Output:
 
-A map that maps prime implicants to their corresponding minterms
+- A map that maps prime implicants to their corresponding minterms
 
 #### Functions used
 The functions use a structure called implicant that stores the minterms covered by the implicant,
@@ -125,11 +127,6 @@ Also, several helper functions are used, including:
 and combinestring, which combines two binary strings into a new string where '-' is used to represent differing bits.
 
 - The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
-
-The generate_column function generates a column of prime implicants from a table of minterms or implicants.
-It takes in a vector of vectors of implicants, 
-a vector of characters representing the variables in the function, and a string to know whether to print the output or not.
-
 
 - The split1 function is a string splitting function that splits a string using some delimiter ("," in our case) and puts the splitted up terms into a vector.
 
