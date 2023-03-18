@@ -7,6 +7,7 @@
 #include <set>
 using namespace std;
 
+// Template function to check for a subset
 template <typename T>
 bool IsSubset(vector<T> maybeSub, vector<T> maybeSuper)
 {
@@ -18,7 +19,7 @@ bool IsSubset(vector<T> maybeSub, vector<T> maybeSuper)
 	return includes(maybeSuper.begin(), maybeSuper.end(), maybeSub.begin(), maybeSub.end());
 }
 
-
+// The following functions are to ensure a minterm and pi are properly deleted from the table
 void deleteMinterm(map<string, vector<int>>& oldmap, int minterm) {
 	for (auto pi = oldmap.begin(); pi != oldmap.end(); pi++) {
 		pi->second.erase(std::remove(pi->second.begin(), pi->second.end(), minterm), pi->second.end());
