@@ -4,7 +4,6 @@
 
 int main() {
 	
-	cout << "Welcome to our QM program!\nThis program accepts any lowercase latin letter starting from 'a' and uses + as an OR, accepts brackets, and uses ' as a not.\n\n";
 	
 	vector<string> testCases;
 	testCases.push_back("aa'+bb'+cc'");
@@ -20,6 +19,8 @@ int main() {
 
 	cout << "The following is the output for our test cases:\n";
 
+
+
 	for (int i = 0; i < 10; i++) {
 		vector<string> termsTest; map<char, int> indexTest;
 		vector<int> mintermsTest;
@@ -34,6 +35,9 @@ int main() {
 	}
 
 	cout << "\n\n\nEnd of test cases. Beginning normal algorithim.\n\n\n";
+
+	cout << "Welcome to our QM program!\nThis program accepts any lowercase latin letter starting from 'a' and uses + as an OR, accepts brackets, and uses ' as a not.\n\n";
+
 	
 	bool cont = true;
 	while (cont) {
