@@ -172,7 +172,13 @@ void printSoP(vector<int> minterms, int varCount, vector<char> variableList)
 		if (i < minterms.size() - 1)
 			cout << " + ";
 	}
-	cout << endl;
+	cout << "\nShorthand notation: Summation of m(";
+	for (int i = 0; i < minterms.size(); i++) {
+		cout << minterms[i];
+		if (i < minterms.size() - 1)
+			cout << ", ";
+	}
+	cout << ")" << endl;
 }
 
 void printPoS(vector<int> maxterms, int varCount, vector<char> variableList)
@@ -190,7 +196,13 @@ void printPoS(vector<int> maxterms, int varCount, vector<char> variableList)
 		}
 		cout << ")";
 	}
-	cout << endl;
+	cout << "\nShorthand notation: Product of M(";
+	for (int i = 0; i < maxterms.size(); i++) {
+		cout << maxterms[i];
+		if (i < maxterms.size() - 1)
+			cout << ", ";
+	}
+	cout << ")" << endl;
 }
 
 vector<int> truthTable(string input, vector<string>& terms, map<char, int>& index)
