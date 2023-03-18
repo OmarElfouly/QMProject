@@ -69,52 +69,72 @@ bool validation(string input, vector<string>& terms, map<char, int>& index)
 
 	input.erase(remove(input.begin(), input.end(), ' '), input.end());		//remove any spaces in the input, easier to handle.
 	transform(input.begin(), input.end(), input.begin(), ::tolower);		//all characters are lowercase for convencience and consistency.
-	if (((input[0] < 97 || input[0] > 122) && input[0] != 40) || ((input.back() < 97 || input.back() > 122) && input.back() != 41 && input.back() != 39))
-		return false;														//making sure we do not start or end with anything other than letters, or (correct) brackets, or NOTs at the end.
-	if (input.size() == 0)
+	if (((input[0] < 97 || input[0] > 122) && input[0] != 40) || ((input.back() < 97 || input.back() > 122) && input.back() != 41 && input.back() != 39)) {
+		cout << "Invalid input: Invalid character input at the start/end." << endl;
+		return false;	//making sure we do not start or end with anything other than letters, or (correct) brackets, or NOTs at the end.
+	}
+	if (input.size() == 0) {
+		cout << "Invalid input: There is no input provided." << endl;
 		return false;
+	}
 
 	vector<char> variableList = varList(input);
-	if (variableList.size() > 10)
+	if (variableList.size() > 10) {
+		cout << "Invalid input: Too many variables provided, please only provide a maximum of 10 variables." << endl;
 		return false;
+	}
 
 	int arr[2] = { 0, 0 };
 	for (int i = 0; i < input.size(); i++) {
 		if (input[i] == '(') {
 			arr[0]++;
 			allBrackIndices.push_back(i);
-			if (i < (input.size() - 1) && (input[i + 1] == ')' || input[i + 1] == '+' || input[i + 1] == 39))	//opening bracket cannot have a closing bracket, a '+', or a NOT right after it.
+			if (i < (input.size() - 1) && (input[i + 1] == ')' || input[i + 1] == '+' || input[i + 1] == 39)) {	//opening bracket cannot have a closing bracket, a '+', or a NOT right after it.
+				cout << "Invalid input: Invalid character after an opening bracket." << endl;
 				return false;
+			}
 		}
 		else if (input[i] == ')') {
 			arr[1]++;
 			allBrackIndices.push_back(i);
-			if (i > 0 && (input[i - 1] == '(' || input[i - 1] == '+'))	//closing bracket cannot have an opening bracket or a '+' immediately after it.
+			if (i > 0 && (input[i - 1] == '(' || input[i - 1] == '+')) {	//closing bracket cannot have an opening bracket or a '+' immediately after it.
+				cout << "Invalid input: Invalid character after a closing bracket." << endl;
 				return false;
+			}
 		}
-		else if (input[i] == '+' && i < (input.size() - 1) && (input[i + 1] == 39))	//no NOT directly after a '+'.
+		else if (input[i] == '+' && i < (input.size() - 1) && (input[i + 1] == 39)) {	//no NOT directly after a '+'.
+			cout << "Invalid input: Cannot have a negation after a \"+\"" << endl;
 			return false;
-		else if (!isalpha(input[i]) && input[i] != '+' && input[i] != 39)		//can use the isalpha() function for above if statements
+		}
+		else if (!isalpha(input[i]) && input[i] != '+' && input[i] != 39) {		//can use the isalpha() function for above if statements
+			cout << "Invalid input: Invalid character was input. Only input letters, \"+\", \"'\", \"(\" or \")\"." << endl;
 			return false;
+		}
 	}
 
-	if (arr[0] != arr[1])		//if the number of opening and closing brackets are unequal, then the input is invalid.
+	if (arr[0] != arr[1]) {		//if the number of opening and closing brackets are unequal, then the input is invalid.
+		cout << "Invalid input: There are unmatched brackets." << endl;
 		return false;
+	}
 	else if (arr[0] == 0 && arr[1] == 0)
 		return true;				//if there are no brackets, then it is in SoP form.
 
 	vector<pair<int, int>> brackets = bracketPairs(input, allBrackIndices);
 	vector<pair<pair<int, int>, char>> bracketTerms;
 
-	if (!allBrackIndices.empty())	//this would mean there are "loose" brackets, which is not a valid input. Most cases covered in above, but instances like (a))(b+c, where ( == ), would not be.
+	if (!allBrackIndices.empty()) {	//this would mean there are "loose" brackets, which is not a valid input. Most cases covered in above, but instances like (a))(b+c, where ( == ), would not be.
+		cout << "Invalid input: There are unmatched brackets." << endl;
 		return false;
+	}
 
 	for (auto& i : brackets) {
 		if (i.second + 1 < input.size() && input[i.second + 1] == 39) {
 			string temp = input.substr(i.first + 1, i.second - i.first - 1);
 			temp.erase(remove(temp.begin(), temp.end(), 39), temp.end());
-			if (temp.size() > 1)		//checking for multi-var NOT, before identifying brackets.
+			if (temp.size() > 1) {		//checking for multi-var NOT, before identifying brackets.
+				cout << "Invalid input: There is a negation of multiple variables at once, which is not in SoP form" << endl;
 				return false;
+			}
 		}
 	}
 
@@ -137,13 +157,17 @@ bool validation(string input, vector<string>& terms, map<char, int>& index)
 		if (i.second == 's') {			//checks if there is a sum within brackets, as that is where violations occur.
 			if (i.first.first > 0) {
 				char checker = input[i.first.first - 1];
-				if (checker != '+' && checker != '(')
+				if (checker != '+' && checker != '(') {
+					cout << "Invalid input: A sum of terms is being multiplied, which is not SoP form." << endl;
 					return false;
+				}
 			}
 			if (i.first.second < input.size() - 1) {
 				char checker = input[i.first.second + 1];
-				if (checker != '+' && checker != ')' && checker != 39)	//checker == 39 should not occur, already accounted for previously.
+				if (checker != '+' && checker != ')' && checker != 39) {	//checker == 39 should not occur, already accounted for previously.
+					cout << "Invalid input: A sum of terms is being multiplied, which is not SoP form." << endl;
 					return false;
+				}
 			}
 		}
 	}

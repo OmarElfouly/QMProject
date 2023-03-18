@@ -1,6 +1,7 @@
 #include "part1_2.h"
 #include "part4.h"
 #include "part3.h"
+#include <chrono>
 
 int main() {
 	/*map<string, vector<int>> piToM_test = {
@@ -18,6 +19,7 @@ int main() {
 	cout << "\n\n\n";
 	part4And5(primeimplicants(minterms, var));
 	*/
+	auto start = chrono::high_resolution_clock::now();
 	string input;
 	getline(cin, input);
 	vector<string> terms; map<char, int> index;
@@ -31,5 +33,8 @@ int main() {
 		cout << "Invalid input." << endl;
 		//return;
 	}
-
+	auto stop = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+	std::cout << "Time taken by function: "
+		<< duration.count() << " microseconds" << "\n";
 }
