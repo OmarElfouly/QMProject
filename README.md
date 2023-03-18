@@ -80,6 +80,8 @@ The printVector function takes in a vector of vectors of implicants and an integ
 
 
 
+
+
 ### Part 4 and 5:
 Input:map where key is the PI and the data is a vector of int values to represent the covers of a minterm
 Output: Solved SOP
