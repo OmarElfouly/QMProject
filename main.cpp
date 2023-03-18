@@ -23,7 +23,6 @@ int main() {
 	while (cont) {
 		cout << "\n\nPlease input function:\n";
 		string input;
-		cin.ignore();
 		getline(cin, input);
 		vector<string> terms; map<char, int> index;
 		vector<int> minterms;
@@ -58,6 +57,7 @@ int main() {
 		}
 		if (c == "1") {
 			cont = true;
+			cin.ignore();
 		}
 		else if (c == "2") {
 			cont = false;
