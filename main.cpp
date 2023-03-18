@@ -4,22 +4,8 @@
 #include <chrono>
 
 int main() {
-	/*map<string, vector<int>> piToM_test = {
-		{"AB",{0,4}},
-		{"AC",{2,4}},
-		{"AF",{0,1,2}},
-		{"AE",{3}}
-	};
-	//string vars = "ABCFE";
-	//vector<int> mins= { 0,1,2,3 };
-
-	part4And5(piToM_test);
-	vector<int> minterms = { 0, 4,8,5,6,9,10,7,13,15 };
-	vector<char> var = { 'a' , 'b' ,'c','d' };
-	cout << "\n\n\n";
-	part4And5(primeimplicants(minterms, var));
-	*/
-	cout << "Welcome to our QM program.\nThis program accepts any lowercase laten letter starting from 'a' and uses + as an OR, accepts brackets, and uses ' as a not.\n\n";
+	
+	cout << "Welcome to our QM program!\nThis program accepts any lowercase latin letter starting from 'a' and uses + as an OR, accepts brackets, and uses ' as a not.\n\n";
 	bool cont = true;
 	while (cont) {
 		cout << "\n\nPlease input function:\n";
@@ -38,14 +24,9 @@ int main() {
 				cout << "\nInvalid choice!\nPlease input either 1 or 2: ";
 				cin >> choice;
 			}
-			if (choice == "1") {
-				//call function with print
-				piMap = primeimplicants(minterms, var,choice);
-			}
-			else if (choice == "2") {
-				//call function without print
-				//piMap = FUNCTIONWITHOUTPRINT(minterms,var);
-			}
+			
+			piMap = primeimplicants(minterms, var,choice);
+			
 			part4And5(piMap);
 		}
 		string c;
@@ -64,4 +45,5 @@ int main() {
 			cont = false;
 		}
 	}
+	return 0;
 }

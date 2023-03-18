@@ -250,9 +250,8 @@ map<string, vector<int>> primeimplicants(vector<int> minterms, vector<char> var,
 
 	// Initialize a new map to store the prime implicants with their variables instead of their binary representation
 	map<string, vector<int>> newResult;
-
 	// Create a new map to store the prime implicants with simplified terms
-	map<string, vector<int>> newResult;
+	
 
 	// Iterate through each element of the result map
 	for (auto it = result.begin(); it != result.end(); it++) {

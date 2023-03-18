@@ -247,6 +247,14 @@ While there are still uncovered minterms
  
  This will repeat until there are no minterms left uncovered, at that point the function prints the final answer.
 
+
+ ### Main.cpp
+
+ When the alorithim launches a welcome line will explain the basic rules for input before the program continues.
+ Main involves a very simple while loop that repeats as long as the user asks it to. The user is prompted for input then given the option of printing the QM
+ or not printing it. Each part of the function is then called with the neccessary arguments. There is an aditional set of input validation preformed for each
+ user input instance.
+
 ## Testing:
 ### Test 1:
 3 variable input, with f = 0. The test input is: aa'+bb'+cc', which is evaluated to 0.
