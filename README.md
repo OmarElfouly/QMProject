@@ -268,6 +268,13 @@ While there are still uncovered minterms
  or not printing it. Each part of the function is then called with the neccessary arguments. There is an aditional set of input validation preformed for each
  user input instance.
 
+ ### Build and Run:
+
+ Clone the project from GitHub, and open it on Visual Studio and click run. You will be presented with instructions on the console, simply follow the
+ on-screen instructions, and type in your input when prompted to get the truth table, the Canonical and shorthand notations, the QM table, the potential
+ prime implicants, and the simplest form of the given function.
+
+
 ## Testing:
 ### Test 1:
 3 variable input, with f = 0. The test input is: aa'+bb'+cc', which is evaluated to 0.
