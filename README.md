@@ -26,15 +26,15 @@ Person Omar will complete 4 and 5
 ## Program Design (There are also comments throughout the code)
 ### Part 1: Ahmed Ali
 Takes input validates SoP:
-- latin letters a to z
-- if there are no brackets then it is SoP
-- Unclosed bracket is an automatic fail
-- Operator at start or finish is a fail
-- Cannot be (ab)' or (a+b)' i.e. no multi input not operations or not that acts on a sum
-- any ( SUM ) must be preceded and followed by a "+" or nothing at all 
-- we will consider " AA+AA' " to be valid sop
-- must be products with only sums between them
-- must return a list or vector of the variables in the input for other functions to use
+- latin letters a to z.
+- if there are no brackets then it is SoP.
+- unmatched brackets result in an automatic fail.
+- Operator at start or finish is a fail.
+- Cannot be (ab)' or (a+b)' i.e. no multi var not operations or not that acts on a sum.
+- any ( SUM ) must be preceded and followed by a "+" or a bracket or nothing at all.
+- we will consider " AA+AA' " to be valid SoP.
+- must be products with only sums between them.
+- must return a list or vector of the variables in the input for other functions to use.
 
 Input: User input
 Output: Clean input
@@ -74,7 +74,7 @@ Finally, if all these checks are passed, the function is evaluated as true, and 
 
 ### Part 2: Ahmed Ali
 Input: clean user input
-Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
+Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF").
 
 Since we have validated that the input is in SoP form, I can now remove all brackets without altering the meaning of the input.
 The main function used in this part is truthTable, which takes the same parameters as the validation function. First of all,
