@@ -1,7 +1,6 @@
 #include "part1_2.h"
 #include "part4_5.h"
 #include "part3.h"
-#include <chrono>
 
 int main() {
 	
