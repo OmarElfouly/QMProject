@@ -46,5 +46,18 @@ int main() {
 			}
 			part4And5(piMap);
 		}
+		string c;
+		cout << "Would you like to keep running the program?\n1-\tYes\n2-\tNo\n\nInput your choice as a number: ";
+		cin >> c;
+		map<string, vector<int>> piMap;
+		while (c != "1" || c != "2") {
+			cout << "\nInvalid choice!\nPlease input either 1 or 2: ";
+		}
+		if (c == "1") {
+			cont = true;
+		}
+		else if (c == "2") {
+			cont = false;
+		}
 	}
 }
