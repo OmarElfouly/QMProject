@@ -5,6 +5,36 @@
 int main() {
 	
 	cout << "Welcome to our QM program!\nThis program accepts any lowercase latin letter starting from 'a' and uses + as an OR, accepts brackets, and uses ' as a not.\n\n";
+	
+	vector<string> testCases;
+	testCases.push_back("aa'+bb'+cc'");
+	testCases.push_back("a'+a+b+c");
+	testCases.push_back("aaaa + b'b'b'");
+	testCases.push_back("a'b'c'd' + a'bc'd'+a'bc'd+a'bcd'+a'bcd + ab'c'd'+ab'c'd+ab'cd'+abc'd + abcd");
+	testCases.push_back("a’’b ++ c");
+	testCases.push_back("((abbbc)(ac+d))");
+	testCases.push_back("(((abbbc’’’’’))+cdd)");
+	testCases.push_back("(a+b)'");
+	testCases.push_back("ac + Ac");
+	testCases.push_back("((((abcd’’’’ef’’’ghij)) + ghi’’’) ++++ abbbbc)");
+
+	cout << "The following is the output for our test cases:\n";
+
+	for (int i = 0; i < 10; i++) {
+		vector<string> termsTest; map<char, int> indexTest;
+		vector<int> mintermsTest;
+		if (validation(testCases[i], termsTest, indexTest)) {
+			mintermsTest = truthTable(testCases[i], termsTest, indexTest);
+			vector<char> varTest = varList(testCases[i]);
+			map<string, vector<int>> piMapTest;
+			piMapTest = primeimplicants(mintermsTest, varTest, "1");
+			part4And5(piMapTest);
+
+		}
+	}
+
+	cout << "\n\n\nEnd of test cases. Beginning normal algorithim.\n\n\n";
+	
 	bool cont = true;
 	while (cont) {
 		cout << "\n\nPlease input function:\n";
