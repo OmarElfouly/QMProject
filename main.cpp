@@ -11,7 +11,7 @@ int main() {
 	testCases.push_back("a'+a+b+c");
 	testCases.push_back("aaaa + b'b'b'");
 	testCases.push_back("a'b'c'd' + a'bc'd'+a'bc'd+a'bcd'+a'bcd + ab'c'd'+ab'c'd+ab'cd'+abc'd + abcd");
-	testCases.push_back("a’’b ++ c");
+	testCases.push_back("a''b ++ c");
 	testCases.push_back("((abbbc)(ac+d))");
 	testCases.push_back("(((abbbc’’’’’))+cdd)");
 	testCases.push_back("(a+b)'");

@@ -55,7 +55,9 @@ vector<char> varList(const string input)
 	vector<char> vars;
 	for (auto& i : input) {
 		if (isalpha(i) && find(vars.begin(), vars.end(), i) == vars.end())	//if it's a letter and does not exist in the vector, add it.
+		{
 			vars.push_back(i);
+		}
 	}
 	sort(vars.begin(), vars.end());
 
