@@ -34,7 +34,7 @@ void deletePI(map<int, vector<string>>& oldmap, string piTerm) {
 
 void part4And5(map<string, vector<int>> PIToMinterm) {
 	if (PIToMinterm.size() == 0) {
-		cout << "\nNo PI terms were given, so no EPIs and no remaining minterms.\n";
+		cout << "\nNo PI terms, so no EPIs and no remaining minterms.\n";
 		cout << "Final answer:\nfunction = 0\n";
 		return;
 	}
@@ -76,13 +76,13 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 
 	//outputing epis
 	if (flag) {
-		cout << "The essential prime implicants are:\n";
+		cout << "\n\nThe essential prime implicants are:\n";
 		for (auto epi : EPIS) {
 			cout << "-\t" << epi << endl;
 		}
 	}
 	else {
-		cout << "There are no essential prime implicants.\n";
+		cout << "\n\nThere are no essential prime implicants.\n";
 	}
 
 	//remaing minterm output
@@ -100,7 +100,7 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 	}
 
 
-	cout << "\nRemaining minterms are:\n";
+	cout << "\n\nRemaining minterms are:\n";
 	for (auto min : mintermToPI) {
 		cout << "-\tm" << min.first << endl;
 	}
@@ -175,7 +175,7 @@ void part4And5(map<string, vector<int>> PIToMinterm) {
 	}
 
 
-	cout << "Final answer is:\n";
+	cout << "\n\nFinal answer is:\nFunction = ";
 	cout << *finalAnswer.begin();
 	finalAnswer.erase(finalAnswer.begin());
 	for (auto term : finalAnswer) {
