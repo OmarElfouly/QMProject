@@ -81,12 +81,13 @@ The main function used in this part is truthTable, which takes the same paramete
 the input is split into its terms using a splitting function, which takes the input and a delimiter, and splits the input between
 each delimiter and stores each part as an element in a vector of strings. Once that is done, I loop over each term, and first of all
 make sure that a variable and its negation do not both exist simultaneously in one term. If they do, then that term is equivalent to zero,
-so I remove that term from my term list. I then proceed by converting each term to a bit value, which I use to determine the
+so I remove that term from my term list. I then proceed by converting each string term to a binary term, which I then use to determine the
 minterms of the function. I do this by setting the variables in a term to 1, I set them to 0 if they are negated, and to 2 if
 they are not present at all. I then loop from 0 to 2^variable_count and use the bitset library to create every possibility of binary
-terms in my function, and I compare only the 1s and 0s (not the 2s) of my binary-converted terms with the bitset, and if they match,
-I add the term to my vector of minterms. Once that is done, I now have my vector of minterms and maxterms, and I call a simple printing
-function to print the canonical forms of the function, along with their shorthand notations.
+terms in my function (basically, the rows of the truth table), and I compare only the 1s and 0s (not the 2s since they do not affect the terms)
+of my binary-converted terms with the bitset, and if they match, I add the term to my vector of minterms. Once that is done, I now have
+my vector of minterms and maxterms, and I call a simple printing function to print the canonical forms of the function, along with
+their shorthand notations.
 
 ### Part 3:
 Input: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
