@@ -37,7 +37,7 @@ Part 5:  Solve the PI table and print the minimized Boolean expression of the Bo
 function using the 3 step heuristic discussed in the lecture.
 
 ## Program Design
-### Part 1:
+### Part 1: Ahmed Ali
 Takes input validates SoP:
 - latin letters a to z.
 - if there are no brackets then it is SoP.
@@ -102,7 +102,7 @@ of my binary-converted terms with the bitset, and if they match, I add the term 
 my vector of minterms and maxterms, and I call a simple printing function to print the canonical forms of the function, along with
 their shorthand notations.
 
-### Part 3:
+### Part 3: Bavly Remon
 
 #### Inputs:
 
@@ -179,7 +179,7 @@ Finally, the function returns the list of prime implicants found during the algo
 -added an extra parameter in the function to add the option to print or not
 
 
-### Part 4 and 5:
+### Part 4 and 5: Omar Elfouly
 
 Since part 4 can be considered an essential subsection of part 5 we will be discussing them together.
 
@@ -243,6 +243,14 @@ While there are still uncovered minterms
  every one of them to our final answer.
  
  This will repeat until there are no minterms left uncovered, at that point the function prints the final answer.
+
+
+ ### Main.cpp
+
+ When the alorithim launches a welcome line will explain the basic rules for input before the program continues.
+ Main involves a very simple while loop that repeats as long as the user asks it to. The user is prompted for input then given the option of printing the QM
+ or not printing it. Each part of the function is then called with the neccessary arguments. There is an aditional set of input validation preformed for each
+ user input instance.
 
 ## Testing:
 ### Test 1:
