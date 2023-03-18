@@ -121,12 +121,14 @@ of the function, along with their shorthand notations.
 
 #### Inputs:
 
-minterms: a vector of integers representing the minterms of a boolean function
-var: a vector of characters representing the variables of the boolean function
-print: a string that determines whether to print intermediate steps of the function
+- minterms: a vector of integers representing the minterms of a boolean function
+
+- var: a vector of characters representing the variables of the boolean function
+
+- print: a string that determines whether to print intermediate steps of the function
 #### Output:
 
-A map that maps prime implicants to their corresponding minterms
+- A map that maps prime implicants to their corresponding minterms
 
 #### Functions used
 The functions use a structure called implicant that stores the minterms covered by the implicant,
@@ -136,19 +138,15 @@ Also, several helper functions are used, including:
 
 - count_ones which counts the number of ones in a binary number
 
-- differ_by_one, which checks if two binary numbers differ by exactly one bit, 
-and combinestring, which combines two binary strings into a new string where '-' is used to represent differing bits.
+- differ_by_one, which checks if two binary numbers differ by exactly one bit 
 
-- The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
+- combinestring, which combines two binary strings into a new string where '-' is used to represent differing bits.
 
-The generate_column function generates a column of prime implicants from a table of minterms or implicants.
-It takes in a vector of vectors of implicants, 
-a vector of characters representing the variables in the function, and a string to know whether to print the output or not.
+- to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
 
+- split1 function is a string splitting function that splits a string using some delimiter ("," in our case) and puts the splitted up terms into a vector.
 
-- The split1 function is a string splitting function that splits a string using some delimiter ("," in our case) and puts the splitted up terms into a vector.
-
-- The printVector function takes in a vector of vectors of implicants and an integer count(keeps track of which column it's printing so it can be labeled), and prints out the implicants with the minterms they cover and whether or not they are prime.
+- printVector function takes in a vector of vectors of implicants and an integer count(keeps track of which column it's printing so it can be labeled), and prints out the implicants with the minterms they cover and whether or not they are prime.
 
 Then there are two main functions Primeimplicants and generate_column
 
