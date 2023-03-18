@@ -44,26 +44,61 @@ Input: clean user input
 Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
 
 ### Part 3:
-Input: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
-Output: map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
+####Inputs:
+
+minterms: a vector of integers representing the minterms of a boolean function
+var: a vector of characters representing the variables of the boolean function
+print: a string that determines whether to print intermediate steps of the function
+####Output:
+
+A map that maps prime implicants to their corresponding minterms
 
 #### Functions used
-The function uses a structure called implicant that stores the minterms covered by the implicant,
+The functions use a structure called implicant that stores the minterms covered by the implicant,
 the implicant itself, and whether or not it is combined.
 
-The program also defines several helper functions, including count_ones which counts the number of ones in a binary number, 
+Also several helper functions are used, including count_ones which counts the number of ones in a binary number, 
 differ_by_one which checks if two binary numbers differ by exactly one bit, 
 and combinestring which combines two binary strings into a new string where '-' is used to represent differing bits.
 
 The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
 
-The generate_column function generates a column of prime implicants from a table of minterms or implicants.
-It takes in a vector of vectors of implicants, 
-a vector of characters representing the variables in the function, and a string to know whether to print the output or not.
-
 The split1 function is a string splitting function that splits .
 
 The printVector function takes in a vector of vectors of implicants and an integer count, and prints out the implicants with their associated minterms and whether or not they are prime.
+
+Then there is two main functions Primeimplicants and Generate groups
+
+primeimplicants is a function that takes in a list of minterms and a list of variables as inputs and returns a map that represents the prime implicants of the Boolean function represented by the minterms.
+The third input, print, is a string that determines whether or not the intermediate steps of the algorithm should be printed to the console.
+
+The function first initializes an empty map to store the prime implicants.
+It then checks for 2 possible cases that dont need to run the full algorithm to compute 
+mainly if all possible minterms are present in the input list, in which case it returns a map with a single entry representing the function being always true.
+And If there are no minterms, it returns an empty map.
+
+The function then groups the minterms based on the number of ones in their binary representation, 
+creating a set of groups of implicants It then calls the Generate groups function to actually compute the Prime implicants using the qm algorithm
+
+Finally, the function converts the prime implicants into impliacnts using the variable represntation instead of the binary one 
+and returns a map with entries representing the prime implicants and the minterms that they cover. 
+If the print parameter is set to true, the function also prints the intermediate steps of the algorithm to the console.
+
+The function generate_column takes in a  vector of vectors of implicants called groups, 
+a vector of characters called var which represents the variables used in the Boolean expression, and a string variable print to control whether or not to print intermediate steps. 
+The function generates a column of prime implicants using the Quine-McCluskey algorithm.
+
+The function first initializes some variables, including vectors for prime implicants and groups of prime implicants, and a hash set to remove duplicates. 
+It then loops through each group of implicants and compares each implicant with every implicant in the next group.
+If two implicants differ by only one variable, they are combined into a new implicant and added to the appropriate group of prime implicants. 
+The function then flags each combined implicant so it is not included in the final list of prime implicants. The function continues this process until no more implicants can be combined.
+
+The function also has an optional printing feature to show the coloumns produced the algorithm. When print is set to "1", the function prints the current column of implicants, followed by a line of dashes to separate the output.
+
+To remove duplicate prime implicants, the function uses a hash set called primes_checker. When a new prime implicant is generated, it is checked against the hash set. 
+If the implicant is not in the hash set, it is added to the hash set and to the appropriate group of prime implicants. This ensures that each prime implicant is unique and not repeated in the final output.
+
+Finally, the function returns the list of prime implicants found during the algorithm.
 
 #### Design choices and changes
 

@@ -195,72 +195,103 @@ map<string, vector<int>> primeimplicants(vector<int> minterms, vector<char> var,
 {
 	int numofmin = minterms.size();
 
-	map<string, vector<int>> result;
+	map<string, vector<int>> result;// Initialize a map to store the prime implicants and their corresponding minterms
 
-	if (numofmin == 1 << var.size())
+
+	if (numofmin == 1 << var.size())// If all possible minterms are covered, return a map with a single key "1" and an empty vector of minterms
 	{
 		result["1"];
 		return result;
 
 	}
-	if (numofmin == 0)
+	if (numofmin == 0)// If there are no minterms, return an empty map
+
 	{
 		return result;
 	}
 
+	// Initialize a vector of vector of implicants representing the groups of minterms based on the number of ones in their binary representation
+	vector<vector<implicant>> groups(var.size() + 1);
+	// Loop through the minterms and add them to the corresponding group
 
-	vector<vector<implicant>> groups(var.size() + 1); // Initialize the groups
 	for (auto m : minterms) {
+		// Count the number of ones in the binary representation of the minterm
 		int count = count_ones(m);
 
+		// Convert the minterm to its binary representation
 		string newbin = to_binary_string(m, var.size());
-		implicant newimp(to_string(m), newbin, false);
 
+		// Create a new implicant object representing the minterm and add it to the corresponding group
+		implicant newimp(to_string(m), newbin, false);
 		groups[count].push_back(newimp);
 	}
 
 
-	vector<implicant> prime_implicants;
-	prime_implicants = generate_column(groups, var,print);
+	vector<implicant> prime_implicants; // Initialize a vector of implicants representing the prime implicants
 
+	prime_implicants = generate_column(groups, var,print);// Generate the columns of the Quine-McCluskey table until all minterms are covered by prime implicants
+
+	// Initialize a vector of strings representing the minterms covered by each prime implicant
 	vector<string> mins;
+	// Loop through the prime implicants and add them to the result map along with their corresponding minterms
 	for (const auto& imp : prime_implicants)
 	{
+		// Split the string representing the minterms covered by the prime implicant into a vector of strings
 		mins = split1(imp.mincovered, ",");
-		vector<int> intVec(mins.size());
 
+		// Convert the vector of strings to a vector of integers
+		vector<int> intVec(mins.size());
 		transform(mins.begin(), mins.end(), intVec.begin(),
 			[](const string& str) { return stoi(str); });
 
+		// Add the prime implicant and its corresponding minterms to the result map
 		result[imp.imp] = intVec;
 	}
+
+	// Initialize a new map to store the prime implicants with their variables instead of their binary representation
 	map<string, vector<int>> newResult;
+
+	// Create a new map to store the prime implicants with simplified terms
+	map<string, vector<int>> newResult;
+
+	// Iterate through each element of the result map
 	for (auto it = result.begin(); it != result.end(); it++) {
+		// Initialize a new string to store the simplified prime implicant
 		string newPI = "";
-		for (int count = 0; count < it->first.length();count++) {
+		// Iterate through each character in the current prime implicant
+		for (int count = 0; count < it->first.length(); count++) {
+			// If the current character is a dash, skip it
 			if (it->first[count] == '-') {
-				
+				// do nothing
 			}
+			// If the current character is a one, add the corresponding variable to the simplified prime implicant
 			else if (it->first[count] == '1') {
 				newPI = newPI + var[count];
 			}
+			// If the current character is a zero, add the corresponding variable but noted 
 			else if (it->first[count] == '0') {
 				newPI = newPI + var[count] + "'";
 			}
 		}
+		// Add the simplified prime implicant and its corresponding minterms to the newResult map
 		newResult[newPI] = it->second;
 	}
+
+	// Move the newResult map to the result map
 	result = move(newResult);
 
+	// Iterate through each element in the result map and print it
 	for (const auto& kv : result) {
 		cout << kv.first << ": ";
 		for (int i : kv.second) {
 			cout << i << " ";
 		}
-
 		cout << endl;
 	}
+	// Print a blank line for formatting purposes
 	cout << endl;
 
+	// Return the result map
 	return result;
+
 }
