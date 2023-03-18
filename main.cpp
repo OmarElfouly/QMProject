@@ -19,6 +19,7 @@ int main() {
 	cout << "\n\n\n";
 	part4And5(primeimplicants(minterms, var));
 	*/
+	cout << "Welcome to our QM program.\nThis program accepts any lowercase laten letter starting from 'a' and uses + as an OR, accepts brackets, and uses ' as a not.\n\n";
 	bool cont = true;
 	while (cont) {
 		cout << "\n\nPlease input function:\n";
