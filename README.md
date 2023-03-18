@@ -103,19 +103,22 @@ A map that maps prime implicants to their corresponding minterms
 The functions use a structure called implicant that stores the minterms covered by the implicant,
 the implicant itself, and whether or not it is combined.
 
-Also several helper functions are used, including count_ones which counts the number of ones in a binary number, 
-differ_by_one which checks if two binary numbers differ by exactly one bit, 
+Also several helper functions are used, including:
+
+-count_ones which counts the number of ones in a binary number
+
+-differ_by_one which checks if two binary numbers differ by exactly one bit, 
 and combinestring which combines two binary strings into a new string where '-' is used to represent differing bits.
 
-The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
+-The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
 
-The split1 function is a string splitting function that splits .
+-The split1 function is a string splitting function that splits a string using some delimiter ("," in our case) and puts the splitted up terms into a vector.
 
-The printVector function takes in a vector of vectors of implicants and an integer count, and prints out the implicants with their associated minterms and whether or not they are prime.
+-The printVector function takes in a vector of vectors of implicants and an integer count(keeps track of which coloumn its printing so it can be labelled), and prints out the implicants with the minterms they cover and whether or not they are prime.
 
-Then there is two main functions Primeimplicants and Generate groups
+Then there is two main functions Primeimplicants and generate_column
 
-primeimplicants is a function that takes in a list of minterms and a list of variables as inputs and returns a map that represents the prime implicants of the Boolean function represented by the minterms.
+-primeimplicants is a function that takes in a list of minterms and a list of variables as inputs and returns a map that represents the prime implicants of the Boolean function represented by the minterms.
 The third input, print, is a string that determines whether or not the intermediate steps of the algorithm should be printed to the console.
 
 The function first initializes an empty map to store the prime implicants.
@@ -124,13 +127,13 @@ mainly if all possible minterms are present in the input list, in which case it 
 And If there are no minterms, it returns an empty map.
 
 The function then groups the minterms based on the number of ones in their binary representation, 
-creating a set of groups of implicants It then calls the Generate groups function to actually compute the Prime implicants using the qm algorithm
+creating a set of groups of implicants It then calls the generate_column function to actually compute the Prime implicants using the qm algorithm
 
 Finally, the function converts the prime implicants into impliacnts using the variable represntation instead of the binary one 
 and returns a map with entries representing the prime implicants and the minterms that they cover. 
 If the print parameter is set to true, the function also prints the intermediate steps of the algorithm to the console.
 
-The function generate_column takes in a  vector of vectors of implicants called groups, 
+-The function generate_column takes in a  vector of vectors of implicants called groups, 
 a vector of characters called var which represents the variables used in the Boolean expression, and a string variable print to control whether or not to print intermediate steps. 
 The function generates a column of prime implicants using the Quine-McCluskey algorithm.
 
