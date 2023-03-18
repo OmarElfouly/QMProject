@@ -1,9 +1,5 @@
 # Project1
 
-Person A = Ahmed Ali
-Person B = Bavly Remon
-Person C = Omar Elfouly
-
 ## Distribution plan:
 
 ### Part (A) split three way:
