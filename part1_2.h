@@ -62,7 +62,7 @@ vector<char> varList(const string input)
 	return vars;
 }
 
-bool validation(string input, vector<string>& terms, map<char, int>& index)
+bool validation(string& input, vector<string>& terms, map<char, int>& index)
 {
 	bool defaultBool = true;
 	vector<int> allBrackIndices;
@@ -229,7 +229,7 @@ void printPoS(vector<int> maxterms, int varCount, vector<char> variableList)
 	cout << ")" << endl;
 }
 
-vector<int> truthTable(string input, vector<string>& terms, map<char, int>& index)
+vector<int> truthTable(string& input, vector<string>& terms, map<char, int>& index)
 {
 	vector<int> minterms;
 	input.erase(remove(input.begin(), input.end(), '('), input.end());
