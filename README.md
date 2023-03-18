@@ -47,6 +47,25 @@ Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
 Input: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
 Output: map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
 
+The function uses a structure called implicant that stores the minterms covered by the implicant,
+the implicant itself, and whether or not it is combined.
+
+The program also defines several helper functions, including count_ones which counts the number of ones in a binary number, 
+differ_by_one which checks if two binary numbers differ by exactly one bit, 
+and combinestring which combines two binary strings into a new string where '-' is used to represent differing bits.
+
+The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
+
+The generate_column function generates a column of prime implicants from a table of minterms or implicants.
+It takes in a vector of vectors of implicants, 
+a vector of characters representing the variables in the function, and a string to know whether to print the output or not.
+
+The split1 function is a string splitting function that splits .
+
+The printVector function takes in a vector of vectors of implicants and an integer count, and prints out the implicants with their associated minterms and whether or not they are prime.
+
+
+
 ### Part 4 and 5:
 Input:map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
 Output: Solved sop
