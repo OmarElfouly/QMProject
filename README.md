@@ -8,22 +8,22 @@ Person C = Omar Elfouly
 
 ### Part (A) split three way:
 
-Person A will complete 1 and 2
-Person B will complete 3
-Person C will complete 4 and 5
+Person Ahmed will complete 1 and 2
+Person Bavly will complete 3
+Person Omar will complete 4 and 5
 
 ### Part (B), (C), (D) will be evenly split across members
 
 ## Plan so far:
 
-- [ ] Confirm Distrubition with Professor
-- [ ] Decide on data structure(s)
-- [ ] Decide on function headers i.e. input and output
-- [ ] Plan basic algorithm flow
-- [ ] Person A, B, C, begin programming
-- [ ] Test cases
+- [x] Confirm Distrubition with Professor
+- [x] Decide on data structure(s)
+- [x] Decide on function headers i.e. input and output
+- [x] Plan basic algorithm flow
+- [x] Person A, B, C, begin programming
+- [x] Test cases
 
-## Overview
+## Program Design
 ### Part 1:
 Takes input validates SoP:
 - latin letters a to z
@@ -67,6 +67,36 @@ The printVector function takes in a vector of vectors of implicants and an integ
 
 
 ### Part 4 and 5:
-Input:map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
-Output: Solved sop
+Input:map where key is the PI and the data is a vector of int values to represent the covers of a minterm
+Output: Solved SOP
 
+## Testing:
+### Test 1:
+3 variable input, with f = 0. The test input is: aa'+bb'+cc', which is evaluated to 0.
+
+### Test 2:
+3 variable input, with f = 1. The test input is a'+a+b+c, which is evaluated to 1.
+
+### Test 3:
+Demonstrating variables repeated multiple times in the same term: aaaa+b'b'b', which evaluates to a + b'.
+
+### Test 4:
+Demonstarting processing of dominance: a'b'c'd'+a'bc'd'+a'bc'd+a'bcd'+a'bcd+ab'c'd'+ab'c'd+ab'cd'+abc'd+abcd.
+
+### Test 5:
+Demonstrating how multiple negations and multiple additions are simplified. a’’b ++ c becomes ab + c.
+
+### Test 6:
+Demonstrating an inavlid PoS term, which shows bracket handling. ((abbbc)(ac+d)) would be invalid since we are multiplying a sum.
+
+### Test 7:
+Demonstrating using multiple negations on the same term, along with handling brackets. (((abbbc’’’’’))+cdd) becomes abc’ + cd
+
+### Test 8:
+Demonstrating a multiple variable negation, which would be invalid. This also includes bracket handling. (a+b)' would be invalid.
+
+### Test 9:
+Demonstrating how the program identifies lowercase and uppercase variables to be identical. ac + Ac would be ac + ad
+
+### Test 10:
+A final all encompassing input, which contains multiple nested brackets, repeated variables in the same term, multile negations, and multiple additions, all at once. ((((abcd’’’’ef’’’ghij)) + ghi’’’) ++++ abbbbc) would be evaluated as abcdef’ghij + ghi’ + abc.
