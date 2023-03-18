@@ -75,6 +75,7 @@ Finally, if all these checks are passed, the function is evaluated as true, and 
 ### Part 2: Ahmed Ali
 Input: clean user input
 Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
+
 Since we have validated that the input is in SoP form, I can now remove all brackets without altering the meaning of the input.
 The main function used in this part is truthTable, which takes the same parameters as the validation function. First of all,
 the input is split into its terms using a splitting function, which takes the input and a delimiter, and splits the input between
