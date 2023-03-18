@@ -39,7 +39,7 @@ int main() {
 			}
 			if (choice == "1") {
 				//call function with print
-				piMap = primeimplicants(minterms, var);
+				piMap = primeimplicants(minterms, var,choice);
 			}
 			else if (choice == "2") {
 				//call function without print

@@ -83,9 +83,12 @@ string to_binary_string(int num, int length) {
 	return binary_str;
 }
 
-void printVector(const vector<vector<implicant>>& vec) {
+void printVector(const vector<vector<implicant>>& vec , int count) {
+	
 	// Loop over each vector inside the outer vector
+	
 	for (const auto& innerVec : vec) {
+
 		// Loop over each implicant inside the inner vector
 		for (const auto& imp : innerVec) {
 
@@ -124,13 +127,14 @@ vector<string> split1(string input, string delim)//string splitting function, sp
 }
 
 // Generates a column of prime implicants from a table of minterms or implicants
-vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<char> var)
+vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<char> var, string print)
 {
 	vector<string> primes;
 	vector<vector<implicant>> primegrps(var.size());
 	bool is_combined;
 	vector<implicant> prime_implicants;
 	unordered_set<string> primes_checker;
+	int count = 1;
 
 	do
 	{
@@ -171,10 +175,15 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<char
 			}
 
 		}
-
-		printVector(groups);
-		cout << "-------------------------------------------------------" << endl;
-		groups = std::move(primegrps);
+		if (print == "1")
+		{
+			cout << "column " << count << endl;
+			count++;
+			printVector(groups,count);
+			
+			cout << "-------------------------------------------------------" << endl;
+		}
+		groups = move(primegrps); 
 		primegrps.resize(var.size());
 	} while (is_combined);
 
@@ -182,7 +191,7 @@ vector<implicant> generate_column(vector<vector<implicant>>& groups, vector<char
 }
 
 
-map<string, vector<int>> primeimplicants(vector<int> minterms, vector<char> var)
+map<string, vector<int>> primeimplicants(vector<int> minterms, vector<char> var, string print)
 {
 	int numofmin = minterms.size();
 
@@ -212,7 +221,7 @@ map<string, vector<int>> primeimplicants(vector<int> minterms, vector<char> var)
 
 
 	vector<implicant> prime_implicants;
-	prime_implicants = generate_column(groups, var);
+	prime_implicants = generate_column(groups, var,print);
 
 	vector<string> mins;
 	for (const auto& imp : prime_implicants)
