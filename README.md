@@ -289,13 +289,13 @@ Demonstrating variables repeated multiple times in the same term: aaaa+b'b'b', w
 Demonstarting processing of dominance: a'b'c'd'+a'bc'd'+a'bc'd+a'bcd'+a'bcd+ab'c'd'+ab'c'd+ab'cd'+abc'd+abcd.
 
 ### Test 5:
-Demonstrating how multiple negations and multiple additions are simplified. a’’b ++ c becomes ab + c.
+Demonstrating how multiple negations and multiple additions are simplified. a''b ++ c becomes ab + c.
 
 ### Test 6:
 Demonstrating an inavlid PoS term, which shows bracket handling. ((abbbc)(ac+d)) would be invalid since we are multiplying a sum.
 
 ### Test 7:
-Demonstrating using multiple negations on the same term, along with handling brackets. (((abbbc’’’’’))+cdd) becomes abc’ + cd
+Demonstrating using multiple negations on the same term, along with handling brackets. (((abbbc'''''))+cdd) becomes abc’ + cd
 
 ### Test 8:
 Demonstrating a multiple variable negation, which would be invalid. This also includes bracket handling. (a+b)' would be invalid.
