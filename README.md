@@ -64,11 +64,11 @@ once this pair of innermost brackets is popped, the next pair of brackets is det
 opening is matched with the innermost closing, excluding the pair which was popped. Now, for each pair, I determined whether
 it contains purely a product, or if it contains a sum, and stored this in a pair of a pair of integers and a characters,
 where the first integer in the pair is the opening bracket, the second the closing, and the character denotes what each
-bracket contained; ‘s’ if it contained a sum, and ‘p’ if it did not. While finding these pairs, I removed the indices of
-the pairs formed from the vector of all bracket indices mentioned earlier, and this allows me to test whether or not there are “loose” brackets,
+bracket contained; â€˜sâ€™ if it contained a sum, and â€˜pâ€™ if it did not. While finding these pairs, I removed the indices of
+the pairs formed from the vector of all bracket indices mentioned earlier, and this allows me to test whether or not there are â€œlooseâ€ brackets,
 which is determined by checking if the vector of all brackets is empty or not, since if all brackets have a matching bracket,
 then all of them would be erased from the vector of all integers, and the check is a simple check to make sure that vector is empty.
-If it is not, then it is an invalid input. Now, once each pair is determined, I only check the bracket pairs which contained a “+”
+If it is not, then it is an invalid input. Now, once each pair is determined, I only check the bracket pairs which contained a â€œ+â€
 within them, since these are the potential problem-causing terms, and I check that it is not being multiplied before or after that term.
 Finally, if all these checks are passed, the function is evaluated as true, and I am able to now move on to part 2.
 
@@ -90,12 +90,13 @@ my vector of minterms and maxterms, and I call a simple printing function to pri
 their shorthand notations.
 
 ### Part 3:
-####Inputs:
+
+#### Inputs:
 
 minterms: a vector of integers representing the minterms of a boolean function
 var: a vector of characters representing the variables of the boolean function
 print: a string that determines whether to print intermediate steps of the function
-####Output:
+#### Output:
 
 A map that maps prime implicants to their corresponding minterms
 
@@ -184,13 +185,13 @@ Demonstrating variables repeated multiple times in the same term: aaaa+b'b'b', w
 Demonstarting processing of dominance: a'b'c'd'+a'bc'd'+a'bc'd+a'bcd'+a'bcd+ab'c'd'+ab'c'd+ab'cd'+abc'd+abcd.
 
 ### Test 5:
-Demonstrating how multiple negations and multiple additions are simplified. a’’b ++ c becomes ab + c.
+Demonstrating how multiple negations and multiple additions are simplified. aâ€™â€™b ++ c becomes ab + c.
 
 ### Test 6:
 Demonstrating an inavlid PoS term, which shows bracket handling. ((abbbc)(ac+d)) would be invalid since we are multiplying a sum.
 
 ### Test 7:
-Demonstrating using multiple negations on the same term, along with handling brackets. (((abbbc’’’’’))+cdd) becomes abc’ + cd
+Demonstrating using multiple negations on the same term, along with handling brackets. (((abbbcâ€™â€™â€™â€™â€™))+cdd) becomes abcâ€™ + cd
 
 ### Test 8:
 Demonstrating a multiple variable negation, which would be invalid. This also includes bracket handling. (a+b)' would be invalid.
@@ -199,4 +200,4 @@ Demonstrating a multiple variable negation, which would be invalid. This also in
 Demonstrating how the program identifies lowercase and uppercase variables to be identical. ac + Ac would be ac + ad
 
 ### Test 10:
-A final all encompassing input, which contains multiple nested brackets, repeated variables in the same term, multile negations, and multiple additions, all at once. ((((abcd’’’’ef’’’ghij)) + ghi’’’) ++++ abbbbc) would be evaluated as abcdef’ghij + ghi’ + abc.
+A final all encompassing input, which contains multiple nested brackets, repeated variables in the same term, multile negations, and multiple additions, all at once. ((((abcdâ€™â€™â€™â€™efâ€™â€™â€™ghij)) + ghiâ€™â€™â€™) ++++ abbbbc) would be evaluated as abcdefâ€™ghij + ghiâ€™ + abc.
