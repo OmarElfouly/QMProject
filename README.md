@@ -123,14 +123,15 @@ Also, several helper functions are used, including:
 
 - count_ones which counts the number of ones in a binary number
 
-- differ_by_one, which checks if two binary numbers differ by exactly one bit, 
-and combinestring, which combines two binary strings into a new string where '-' is used to represent differing bits.
+- differ_by_one, which checks if two binary numbers differ by exactly one bit 
 
-- The to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
+- combinestring, which combines two binary strings into a new string where '-' is used to represent differing bits.
 
-- The split1 function is a string splitting function that splits a string using some delimiter ("," in our case) and puts the splitted up terms into a vector.
+- to_binary_string function converts a decimal number into a binary string and pads it with leading zeroes to reach a specified length.
 
-- The printVector function takes in a vector of vectors of implicants and an integer count(keeps track of which column it's printing so it can be labeled), and prints out the implicants with the minterms they cover and whether or not they are prime.
+- split1 function is a string splitting function that splits a string using some delimiter ("," in our case) and puts the splitted up terms into a vector.
+
+- printVector function takes in a vector of vectors of implicants and an integer count(keeps track of which column it's printing so it can be labeled), and prints out the implicants with the minterms they cover and whether or not they are prime.
 
 Then there are two main functions Primeimplicants and generate_column
 
