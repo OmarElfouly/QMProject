@@ -47,6 +47,7 @@ Output: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
 Input: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
 Output: map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
 
+#### Functions used
 The function uses a structure called implicant that stores the minterms covered by the implicant,
 the implicant itself, and whether or not it is combined.
 
@@ -63,6 +64,19 @@ a vector of characters representing the variables in the function, and a string 
 The split1 function is a string splitting function that splits .
 
 The printVector function takes in a vector of vectors of implicants and an integer count, and prints out the implicants with their associated minterms and whether or not they are prime.
+
+#### Design choices and changes
+
+- Added the implicant struct instead of only using a string for the implicant to be able to store more data about the implicant 
+(used struct instead of pair)
+
+-decided to keep track of minterms combined to know the minterms covered by an implicant instead of using the implicant itself and some recursive function (reason why struct was implemented )
+
+-Used an Unordered set instead of a vector to keep track of repeated combined implicants as it is O(1) search
+
+-Used a do while loop instead of for loop to stop whe no more implicants can be combined 
+
+-added extra parameter in the function to add the option to print or not
 
 
 
