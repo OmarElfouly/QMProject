@@ -8,22 +8,22 @@ Person C = Omar Elfouly
 
 ### Part (A) split three way:
 
-Person A will complete 1 and 2
-Person B will complete 3
-Person C will complete 4 and 5
+Person Ahmed will complete 1 and 2
+Person Bavly will complete 3
+Person Omar will complete 4 and 5
 
 ### Part (B), (C), (D) will be evenly split across members
 
 ## Plan so far:
 
-- [ ] Confirm Distrubition with Professor
-- [ ] Decide on data structure(s)
-- [ ] Decide on function headers i.e. input and output
-- [ ] Plan basic algorithm flow
-- [ ] Person A, B, C, begin programming
-- [ ] Test cases
+- [x] Confirm Distrubition with Professor
+- [x] Decide on data structure(s)
+- [x] Decide on function headers i.e. input and output
+- [x] Plan basic algorithm flow
+- [x] Person A, B, C, begin programming
+- [x] Test cases
 
-## Overview
+## Program Design
 ### Part 1:
 Takes input validates SoP:
 - latin letters a to z
@@ -48,8 +48,8 @@ Input: Vector of min terms (x = {1,5,9}), and string of variables ("ACF")
 Output: map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
 
 ### Part 4 and 5:
-Input:map where key is the PI and the data is a vector of bool values such that a True in position x means this PI covers minterm x
-Output: Solved sop
+Input:map where key is the PI and the data is a vector of int values to represent the covers of a minterm
+Output: Solved SOP
 
 ## Testing:
 ### Test 1:
