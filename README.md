@@ -50,6 +50,7 @@ Takes input validates SoP:
 - must return a list or vector of the variables in the input for other functions to use.
 
 Input: User input
+
 Output: Clean input
 
 Part 1 is the section of the program concerned with input validation. It consists of 1 main function, named validation,

@@ -13,10 +13,10 @@ int main() {
 	testCases.push_back("a'b'c'd' + a'bc'd'+a'bc'd+a'bcd'+a'bcd + ab'c'd'+ab'c'd+ab'cd'+abc'd + abcd");
 	testCases.push_back("a''b ++ c");
 	testCases.push_back("((abbbc)(ac+d))");
-	testCases.push_back("(((abbbc’’’’’))+cdd)");
+	testCases.push_back("(((abbbc'''''))+cdd)");
 	testCases.push_back("(a+b)'");
 	testCases.push_back("ac + Ac");
-	testCases.push_back("((((abcd’’’’ef’’’ghij)) + ghi’’’) ++++ abbbbc)");
+	testCases.push_back("((((abcd''''ef'''ghij)) + ghi''') ++++ abbbbc)");
 
 	cout << "The following is the output for our test cases:\n";
 
