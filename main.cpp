@@ -18,18 +18,32 @@ int main() {
 	cout << "\n\n\n";
 	part4And5(primeimplicants(minterms, var));
 	*/
-	string input;
-	getline(cin, input);
-	vector<string> terms; map<char, int> index;
-	vector<int> minterms;
-	if (validation(input, terms, index)) {
-		minterms = truthTable(input, terms, index);
-		vector<char> var = varList(input);
-		part4And5(primeimplicants(minterms, var));
+	bool cont = true;
+	while (cont) {
+		cout << "\n\nPlease input function:\n";
+		string input;
+		getline(cin, input);
+		vector<string> terms; map<char, int> index;
+		vector<int> minterms;
+		if (validation(input, terms, index)) {
+			minterms = truthTable(input, terms, index);
+			vector<char> var = varList(input);
+			string choice;
+			cout << "Would you like to print the QM table?\n1-\tYes\n2-\tNo\n\nInput your choice as a number: ";
+			cin >> choice;
+			map<string, vector<int>> piMap;
+			while (choice != "1" || choice != "2") {
+				cout << "\nInvalid choice!\nPlease input either 1 or 2: ";
+			}
+			if (choice == "1") {
+				//call function with print
+				piMap = primeimplicants(minterms, var);
+			}
+			else if (choice == "2") {
+				//call function without print
+				//piMap = FUNCTIONWITHOUTPRINT(minterms,var);
+			}
+			part4And5(piMap);
+		}
 	}
-	else {
-		cout << "Invalid input." << endl;
-		//return;
-	}
-
 }

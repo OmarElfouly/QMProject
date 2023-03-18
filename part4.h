@@ -35,11 +35,11 @@ void deletePI(map<int, vector<string>>& oldmap, string piTerm) {
 void part4And5(map<string, vector<int>> PIToMinterm) {
 	if (PIToMinterm.size() == 0) {
 		cout << "\nNo PI terms, so no EPIs and no remaining minterms.\n";
-		cout << "Final answer:\nfunction = 0\n";
+		cout << "Final answer:\nFunction = 0\n";
 		return;
 	}
 	if (PIToMinterm.size() == 1 && PIToMinterm.find("1") != PIToMinterm.end()) {
-		cout << "\nEssential prime implicant:\n-\t1\n\nNo remaining minterms.\nFinal answer:\nfunction = 1\n";
+		cout << "\nFunction = 1 therefore:\nEssential prime implicant are:\n-\t1\n\nNo remaining minterms.\nFinal answer:\nFunction = 1\n";
 		return;
 	}
 	//need a condition in case the prime implicant is "1"
