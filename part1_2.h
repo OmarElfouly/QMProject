@@ -24,6 +24,13 @@ vector<string> split(string input, string delim)		//string splitting function, s
 	}
 	terms.push_back(input);
 
+	for (int i = 0; i < terms.size(); i++) {
+		if (terms[i].size() == 0) {
+			terms.erase(terms.begin() + i);
+			i--;
+		}
+	}
+
 	return terms;
 }
 
